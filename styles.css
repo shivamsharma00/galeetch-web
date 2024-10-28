@@ -43,6 +43,14 @@ h1, h2, h3 {
   letter-spacing: 2px;
 }
 
+/* h2 {
+  color: var(--accent-color1) !important;
+} */
+.feature-slide h2 {
+  color: #F5A623;
+}
+
+
 body, p {
   font-family: 'Poppins', sans-serif;
   letter-spacing: 0.5px;
@@ -54,18 +62,19 @@ body, p {
   padding: 20px 0;
   position: fixed;
   top: 0;
-  background-color: rgba(255, 255, 255, 0.95);
-  z-index: 1000;
-  transition: background-color 0.3s ease;
-}
-
-.navbar.transparent {
-  background-color: transparent;
-}
-
-.navbar.solid {
   background-color: var(--dark-green1);
-  transition: background-color 0.3s ease-in-out;
+  z-index: 1000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar.scrolled {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.navbar .navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .navbar .logo img {
@@ -85,6 +94,12 @@ body, p {
 .nav-links a {
   font-weight: 500;
   position: relative;
+  color: #FFFFFF;
+  transition: color 0.3s ease;
+}
+
+.navbar.scrolled .nav-links a {
+  color: #333333;
 }
 
 .nav-links a:hover {
@@ -95,7 +110,7 @@ body, p {
   padding: 12px 28px;
   background: linear-gradient(135deg, var(--accent-color1), var(--accent-color2));
   color: #FFFFFF;
-  border-radius: 50px; /* Rounded buttons give a more polished look */
+  border-radius: 50px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
@@ -108,6 +123,12 @@ body, p {
 .hamburger {
   display: none;
   font-size: 24px;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.navbar.scrolled .hamburger {
+  color: #333333;
 }
 
 /* Hero Section */
@@ -127,12 +148,13 @@ body, p {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(27, 94, 32, 0.5); /* Dark overlay to match new color scheme */
+  background: rgba(27, 94, 32, 0.5);
 }
 
 .hero-content {
   position: relative;
   max-width: 700px;
+  text-align: left; /* Left-aligned text */
 }
 
 .hero h1 {
@@ -172,12 +194,12 @@ body, p {
 
 .feature-slide {
   position: relative;
-  min-height: 100vh;
+  min-height: 80vh; /* Reduced height */
   display: flex;
   flex-direction: column;
   justify-content: center;
   opacity: 0;
-  text-align: center;
+  text-align: left; /* Left-aligned text */
   color: #FFFFFF;
   padding: 0 20px;
   transform: translateY(50px);
@@ -197,7 +219,6 @@ body, p {
 .feature-slide p {
   font-size: 24px;
   max-width: 800px;
-  margin: 0 auto;
 }
 
 /* About Us Section */
@@ -207,16 +228,16 @@ body, p {
 }
 
 .about h2 {
-  text-align: center;
   font-size: 36px;
   margin-bottom: 20px;
   color: var(--dark-green1);
+  text-align: left; /* Left-aligned text */
 }
 
 .about p {
-  text-align: center;
   font-size: 18px;
   color: var(--dark-green2);
+  text-align: left; /* Left-aligned text */
 }
 
 /* Contact Section */
@@ -226,16 +247,16 @@ body, p {
 }
 
 .contact h2 {
-  text-align: center;
   font-size: 36px;
   margin-bottom: 20px;
   color: var(--dark-green1);
+  text-align: left; /* Left-aligned text */
 }
 
 .contact p {
-  text-align: center;
   font-size: 18px;
   color: var(--dark-green2);
+  text-align: left; /* Left-aligned text */
 }
 
 /* Signup Section */
@@ -245,22 +266,21 @@ body, p {
 }
 
 .signup h2 {
-  text-align: center;
   font-size: 36px;
   margin-bottom: 20px;
   color: var(--dark-green1);
+  text-align: left; /* Left-aligned text */
 }
 
 .signup p {
-  text-align: center;
   font-size: 18px;
   margin-bottom: 40px;
   color: var(--dark-green2);
+  text-align: left; /* Left-aligned text */
 }
 
 .signup-form {
   max-width: 600px;
-  margin: 0 auto;
 }
 
 .signup-form .form-group {
@@ -309,6 +329,7 @@ body, p {
 .cta h2 {
   font-size: 36px;
   margin-bottom: 30px;
+  color: #ffffff;
 }
 
 .cta .btn-secondary {
@@ -374,6 +395,10 @@ body, p {
     display: block;
   }
 
+  .navbar .navbar-container {
+    justify-content: space-between;
+  }
+
   .hero h1 {
     font-size: 40px;
   }
@@ -389,10 +414,8 @@ body, p {
   .feature-slide p {
     font-size: 18px;
   }
-}
 
-/* Mobile navigation toggle */
-@media (max-width: 768px) {
+  /* Mobile navigation toggle */
   .nav-links {
     display: none;
     flex-direction: column;

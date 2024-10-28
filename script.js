@@ -3,12 +3,10 @@
 // Navbar Scroll Effect
 window.addEventListener('scroll', function() {
   const navbar = document.querySelector('.navbar');
-  if (window.scrollY > 50) {
-    navbar.classList.add('solid');
-    navbar.classList.remove('transparent');
+  if (window.scrollY > 0) {
+    navbar.classList.add('scrolled');
   } else {
-    navbar.classList.add('transparent');
-    navbar.classList.remove('solid');
+    navbar.classList.remove('scrolled');
   }
 });
 
@@ -25,7 +23,7 @@ function typingEffect() {
       changingText.innerHTML += word.shift();
       setTimeout(loopTyping, 150); // Adjusted typing speed
     } else {
-      setTimeout(deletingEffect, 5000); // Adjusted display time
+      setTimeout(deletingEffect, 3000); // Adjusted display time
     }
   };
   loopTyping();
@@ -59,7 +57,7 @@ document.addEventListener('scroll', function() {
     const elementTop = slide.offsetTop;
     const elementBottom = elementTop + slide.offsetHeight;
 
-    if (scrollPosition + windowHeight / 2 >= elementTop && scrollPosition + windowHeight / 2 < elementBottom) {
+    if (scrollPosition + windowHeight >= elementTop + 100) { // Adjusted trigger point
       slide.classList.add('active');
     } else {
       slide.classList.remove('active');
