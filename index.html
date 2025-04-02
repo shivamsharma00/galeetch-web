@@ -1,137 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Galeetch - Your AI-Powered Life Coach</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700&display=swap" rel="stylesheet">
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Galatech</title>
+  <!-- Link to external CSS -->
+  <link rel="icon" type="image/png" href="assets/galeetchLogo.svg">
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
 
-  <!-- Navigation Bar -->
-  <nav class="navbar">
-    <div class="container navbar-container">
-      <a href="#" class="logo">
-        <img src="assets/galeetch.png" alt="Galeetch Logo" style="width: 100px; height: auto;">
-      </a>
-      <ul class="nav-links">
-        <li><a href="#discover">Discover Galeetch</a></li>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#signup" class="btn btn-primary">Get Started</a></li>
-      </ul>
-      <div class="hamburger">
-        <i class="fas fa-bars"></i>
-      </div>
-    </div>
-  </nav>
 
-  <!-- Hero Section -->
-  <header class="hero">
-    <div class="overlay"></div>
-    <div class="container hero-content">
-      <h1>We Help You <span class="changing-text"></span></h1>
-      <a href="#signup" class="btn btn-primary">Start Your Journey</a>
-    </div>
+  <!-- Top Bar (no fixed position, no border/shadow) -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <!-- Replace with your logo -->
+        <img src="assets/galeetch.png" alt="Galatech Logo"/>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#waitlist">Waitlist</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <!-- Discover Galeetch Section -->
-  <section id="discover" class="discover">
-    <!-- Feature Slides -->
-    <div class="feature-container">
-      <div class="feature-slide" id="feature1">
-        <h2>Privacy First</h2>
-        <p>Your data stays on your device, secured with edge machine learning technology.</p>
+  <!-- Hero Section (Home) -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <!-- Gradient heading to match the logo’s blue & yellow -->
+      <h1>Experience the Future of Browsing</h1>
+  
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+   
+    <div class="features-list">
+      <div class="feature-item">
+        <h3>Intelligent Navigation</h3>
+        <p>Let your site browsing experience become more intuitive and dynamic.</p>
       </div>
-      <div class="feature-slide" id="feature2">
-        <h2>Intelligent Memory</h2>
-        <p>Our AI learns and adapts over time, offering personalized insights.</p>
+      <div class="feature-item">
+        <h3>Personalized Efficiency</h3>
+        <p>Experience tailored suggestions and shortcuts that adapt to your habits.</p>
       </div>
-      <div class="feature-slide" id="feature3">
-        <h2>Mood Tracking</h2>
-        <p>Monitor your mood to enhance focus and well-being.</p>
+      <div class="feature-item">
+        <h3>Streamlined Workflow</h3>
+        <p>We reduce time-consuming steps so you can focus on what truly matters.</p>
       </div>
-      <div class="feature-slide" id="feature4">
-        <h2>Friendly Support</h2>
-        <p>A supportive companion that keeps you on track in a friendly manner.</p>
-      </div>
-      <div class="feature-slide" id="feature5">
-        <h2>Adaptive Personality</h2>
-        <p>Our AI adjusts to your unique personality and preferences.</p>
-      </div>
-      <div class="feature-slide" id="feature6">
-        <h2>Your AI Life Coach</h2>
-        <p>Experience the synergy of a life coach, AI assistant, and support system.</p>
+      <div class="feature-item">
+        <h3>Privacy-First Design</h3>
+        <p>Your data is secure—always. We prioritize protection at every step.</p>
       </div>
     </div>
   </section>
 
-  <!-- About Us Section -->
-  <section id="about" class="about">
-    <div class="container">
-      <h2>About Galeetch</h2>
-      <p>Information about the company and mission.</p>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <div class="container">
-      <h2>Contact Us</h2>
-      <p>You can reach us at...</p>
-    </div>
-  </section>
-
-  <!-- Signup Section -->
-  <section id="signup" class="signup">
-    <div class="container">
-      <h2>Get Started with Galeetch</h2>
-      <p>Sign up now to begin your journey with your AI-Powered Life Coach.</p>
-      <form action="#" method="post" class="signup-form">
-        <div class="form-group">
-          <input type="text" name="name" placeholder="Your Name" required>
-        </div>
-        <div class="form-group">
-          <input type="email" name="email" placeholder="Your Email" required>
-        </div>
-        <div class="form-group">
-          <textarea name="message" placeholder="Your Message" rows="5"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Sign Up</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- Call-to-Action Section -->
-  <section class="cta">
-    <div class="container">
-      <h2>Embrace the Future with Galeetch</h2>
-      <a href="#signup" class="btn btn-secondary">Join Us Today</a>
-    </div>
+  <!-- Waitlist Section -->
+  <section id="waitlist" class="waitlist-section">
+    <h2>Stay Tuned</h2>
+    <p>
+      We’re on the verge of launching something transformative at Galatech. While our technology remains under wraps, every detail is crafted to enhance your browsing experience from the very first visit.
+    </p>
+    <form id="waitlist-form">
+      <input type="email" id="email" placeholder="Enter your email" required/>
+      <button type="submit">Join the Waitlist</button>
+    </form>
   </section>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="container footer-content">
-      <a href="#" class="logo">
-        <img src="logo-footer.png" alt="Galeetch Logo">
-      </a>
-      <ul class="footer-links">
-        <li><a href="#discover">Discover Galeetch</a></li>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <p>&copy; 2023 Galeetch. All rights reserved.</p>
-    </div>
+  <footer>
+    <p>© 2025 Galatech. All rights reserved.</p>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Link to external JS -->
   <script src="script.js"></script>
 </body>
 </html>
