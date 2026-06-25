@@ -1,82 +1,614 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Galeetch</title>
-  <!-- Link to external CSS -->
-  <link rel="icon" type="image/png" href="assets/galeetchLogo.svg">
-  <link rel="stylesheet" href="styles.css"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shivam Sharma — Senior Software Engineer · Gen AI &amp; Agentic Systems</title>
+<meta name="description" content="Shivam Sharma — Senior Software Engineer focused on Gen-AI and multi-agent systems. Tampa, FL.">
+<meta name="author" content="Shivam Sharma">
+<meta property="og:title" content="Shivam Sharma — Senior Software Engineer · Gen AI">
+<meta property="og:description" content="Senior software engineer building production LLM-native and multi-agent systems.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://galeetch.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161619; --ink2:#18181b; --body:#2c2c30; --body2:#34343a;
+    --mut:#56565c; --mut2:#74747a; --mut3:#8a8a90; --faint:#b6b6bc;
+    --faint2:#c0c0c6; --line:#ececee; --line2:#f1f1f3; --bg:#ffffff;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --sans:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:var(--bg);}
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    font-family:var(--sans);color:var(--body);}
+  ::selection{background:var(--ink2);color:#fff;}
+  a{color:inherit;text-decoration:none;}
+  canvas#bg{position:absolute;top:0;left:0;z-index:0;pointer-events:none;}
+
+  /* HUD */
+  .hud{position:fixed;right:16px;bottom:13px;z-index:3;font-family:var(--mono);
+    font-size:10px;letter-spacing:1px;color:#c4c4ca;pointer-events:none;}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:4;background:rgba(255,255,255,0.82);
+    backdrop-filter:saturate(180%) blur(10px);-webkit-backdrop-filter:saturate(180%) blur(10px);
+    border-bottom:1px solid var(--line);}
+  .nav-inner{max-width:912px;margin:0 auto;padding:14px 56px;display:flex;
+    justify-content:space-between;align-items:center;}
+  .brand{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:-0.2px;color:var(--ink);}
+  .brand .dim{color:var(--faint);font-weight:500;}
+  .nav-links{display:flex;gap:20px;font-family:var(--mono);font-size:11px;
+    letter-spacing:1px;color:var(--mut2);text-transform:lowercase;}
+  .nav-links a{transition:color .15s;}
+  .nav-links a:hover{color:var(--ink);}
+
+  main{position:relative;z-index:1;max-width:912px;margin:0 auto;padding:0 56px 120px;}
+
+  .filemeta{display:flex;justify-content:space-between;align-items:baseline;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:2px;color:var(--faint);
+    text-transform:uppercase;padding:46px 0 30px;}
+
+  /* HERO */
+  header.hero{padding-bottom:32px;border-bottom:1px solid var(--line);}
+  .role-tag{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--mut3);margin-bottom:12px;}
+  h1.name{margin:0;font-family:var(--mono);font-size:clamp(34px,7vw,52px);font-weight:600;
+    letter-spacing:-1.5px;color:var(--ink);line-height:1.02;}
+  .subtitle{margin-top:14px;font-size:16px;color:var(--mut);letter-spacing:0.1px;max-width:560px;}
+  .contactline{margin-top:20px;display:flex;flex-wrap:wrap;gap:7px 14px;
+    font-family:var(--mono);font-size:11.5px;color:var(--mut2);align-items:center;}
+  .contactline .sep{color:#d2d2d7;}
+  .contactline a{border-bottom:1px solid transparent;transition:border-color .15s,color .15s;}
+  .contactline a:hover{color:var(--ink);border-bottom-color:var(--ink);}
+  .socials{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;}
+  .socials a{font-family:var(--mono);font-size:11px;letter-spacing:0.5px;color:var(--mut2);
+    border:1px solid var(--line);padding:7px 12px;border-radius:2px;
+    transition:border-color .15s,color .15s,background .15s;}
+  .socials a:hover{color:var(--ink);border-color:#cfcfd4;background:#fafafa;}
+
+  /* SECTION GRID */
+  section.sec{display:grid;grid-template-columns:132px 1fr;gap:32px;
+    padding:38px 0;border-bottom:1px solid var(--line);scroll-margin-top:64px;}
+  .sec-no{font-family:var(--mono);font-size:11px;color:var(--faint2);font-weight:500;letter-spacing:1px;}
+  .sec-name{font-family:var(--mono);font-size:11px;color:#6b6b70;font-weight:600;
+    letter-spacing:2px;text-transform:uppercase;margin-top:6px;}
+  .sec-sub{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:1px;margin-top:14px;line-height:1.7;}
+
+  .lede{font-size:14px;line-height:1.7;color:var(--body2);max-width:640px;text-wrap:pretty;}
+
+  /* SKILLS */
+  .skill-row{display:grid;grid-template-columns:168px 1fr;gap:8px 22px;padding:9px 0;border-top:1px solid var(--line2);}
+  .skill-row:last-child{border-bottom:1px solid var(--line2);}
+  .skill-k{font-family:var(--mono);font-size:11px;color:#7a7a80;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
+  .skill-v{font-family:var(--mono);font-size:12px;line-height:1.55;color:var(--body2);}
+
+  /* EXPERIENCE */
+  .jobs{display:flex;flex-direction:column;gap:34px;}
+  .job-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .job-title{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--ink2);letter-spacing:-0.2px;}
+  .job-title .lead{color:var(--mut3);font-weight:500;}
+  .job-when{font-family:var(--mono);font-size:11.5px;color:var(--mut3);white-space:nowrap;}
+  .job-org{font-family:var(--mono);font-size:11.5px;color:var(--mut2);margin-top:3px;}
+  .bullets{display:flex;flex-direction:column;gap:11px;margin-top:14px;}
+  .bullet{display:grid;grid-template-columns:16px 1fr;gap:10px;}
+  .dot{display:block;width:6px;height:6px;border:1px solid var(--ink2);opacity:.45;margin-top:6px;}
+  .btxt{font-size:13px;line-height:1.62;color:var(--body2);text-wrap:pretty;}
+  .btxt strong{color:var(--ink2);font-weight:600;}
+
+  /* PROJECTS */
+  .projects{display:flex;flex-direction:column;}
+  .proj{display:grid;grid-template-columns:1fr auto;gap:8px 18px;align-items:baseline;
+    padding:15px 0;border-top:1px solid var(--line2);}
+  .projects .proj:last-child{border-bottom:1px solid var(--line2);}
+  .proj-name{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink2);}
+  .proj-desc{grid-column:1 / -1;font-size:12.5px;line-height:1.6;color:var(--mut);margin-top:2px;max-width:600px;text-wrap:pretty;}
+  .proj-link{font-family:var(--mono);font-size:10.5px;letter-spacing:0.5px;color:var(--mut3);
+    white-space:nowrap;border-bottom:1px dotted #cfcfd4;transition:color .15s,border-color .15s;}
+  .proj-link:hover{color:var(--ink);border-bottom-color:var(--ink);}
+  .proj-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:1px;color:var(--faint);text-transform:uppercase;}
+
+  /* WRITING — monochrome overline cards */
+  .writing{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line2);
+    border:1px solid var(--line2);}
+  .post{background:var(--bg);padding:20px 20px 22px;display:flex;flex-direction:column;gap:10px;
+    transition:background .15s;min-height:150px;}
+  .post:hover{background:#fafafa;}
+  .post-top{font-family:var(--mono);font-size:9.5px;letter-spacing:1px;color:var(--faint);
+    text-transform:uppercase;border-top:1.5px solid var(--ink2);padding-top:10px;display:flex;
+    justify-content:space-between;}
+  .post-title{font-size:13.5px;line-height:1.5;color:var(--ink2);font-weight:500;text-wrap:pretty;}
+  .post-arrow{font-family:var(--mono);font-size:11px;color:var(--mut3);margin-top:auto;transition:color .15s;}
+  .post:hover .post-arrow{color:var(--ink);}
+  .writing-all{margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--mut2);
+    border-bottom:1px dotted #cfcfd4;display:inline-block;}
+  .writing-all:hover{color:var(--ink);}
+
+  /* EDUCATION */
+  .edu-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+  .edu-deg{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink2);}
+  .edu-deg .spec{color:var(--mut3);font-weight:500;}
+  .edu-org{font-size:12.5px;color:var(--mut);margin-top:3px;}
+  .edu-when{font-family:var(--mono);font-size:11.5px;color:var(--mut3);white-space:nowrap;}
+
+  /* CONTACT / FOOTER */
+  .contact-grid{display:flex;flex-direction:column;gap:13px;}
+  .crow{display:grid;grid-template-columns:120px 1fr;gap:14px;font-family:var(--mono);font-size:12px;
+    padding:9px 0;border-top:1px solid var(--line2);}
+  .crow:last-child{border-bottom:1px solid var(--line2);}
+  .ck{color:#7a7a80;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;font-size:11px;}
+  .cv a{color:var(--body2);border-bottom:1px solid transparent;transition:border-color .15s,color .15s;}
+  .cv a:hover{color:var(--ink);border-bottom-color:var(--ink);}
+  .eof{margin-top:34px;font-family:var(--mono);font-size:10.5px;letter-spacing:1px;color:#c4c4ca;}
+
+  @media (max-width:720px){
+    .nav-inner,main{padding-left:22px;padding-right:22px;}
+    .nav-links{display:none;}
+    section.sec{grid-template-columns:1fr;gap:14px;padding:30px 0;}
+    .sec-head{display:flex;gap:12px;align-items:baseline;}
+    .sec-no{margin-top:0;}
+    .sec-name{margin-top:0;}
+    .sec-sub{display:none;}
+    .skill-row{grid-template-columns:1fr;gap:3px;}
+    .writing{grid-template-columns:1fr;}
+    .filemeta{padding-top:30px;}
+  }
+</style>
 </head>
-  
 <body>
+<canvas id="bg"></canvas>
+<div class="hud">bg ▸ agent_workflow.sim()</div>
 
+<nav>
+  <div class="nav-inner">
+    <a href="#top" class="brand">SHIVAM SHARMA<span class="dim"> /</span></a>
+    <div class="nav-links">
+      <a href="#about">about</a>
+      <a href="#experience">work</a>
+      <a href="#projects">projects</a>
+      <a href="#writing">writing</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
 
-  <!-- Top Bar (no fixed position, no border/shadow) -->
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <!-- Replace with your logo -->
-        <img src="assets/galeetch.png" alt="Galeetch Logo"/>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#home" class="active">Home</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#waitlist">Waitlist</a></li>
-      </ul>
-    </nav>
+<main id="top">
+
+  <div class="filemeta">
+    <span>// portfolio.init()</span>
+    <span>Tampa · FL · 2026</span>
+  </div>
+
+  <header class="hero" id="about">
+    <div class="role-tag">// senior_software_engineer</div>
+    <h1 class="name">SHIVAM&nbsp;SHARMA</h1>
+    <div class="subtitle">Senior Software Engineer — building production Gen-AI &amp; multi-agent systems.</div>
+    <div class="contactline">
+      <span>Tampa, FL <span style="color:#abacb2;">(open to relocation)</span></span>
+      <span class="sep">·</span>
+      <a href="mailto:sharma.shivam3242@gmail.com">sharma.shivam3242@gmail.com</a>
+      <span class="sep">·</span>
+      <a href="https://www.linkedin.com/in/shivamsharma00/" target="_blank" rel="noopener">linkedin.com/in/shivamsharma00</a>
+    </div>
+    <div class="socials">
+      <a href="https://github.com/shivamsharma00" target="_blank" rel="noopener">↳ github</a>
+      <a href="https://www.linkedin.com/in/shivamsharma00/" target="_blank" rel="noopener">↳ linkedin</a>
+      <a href="https://twitter.com/galeetch" target="_blank" rel="noopener">↳ twitter / x</a>
+      <a href="https://medium.com/@shivamsharma00" target="_blank" rel="noopener">↳ medium</a>
+      <a href="mailto:sharma.shivam3242@gmail.com">↳ email</a>
+    </div>
   </header>
 
-  <!-- Hero Section (Home) -->
-  <section id="home" class="hero">
-    <div class="hero-content">
-      <!-- Gradient heading to match the logo’s blue & yellow -->
-      <h1>Experience the Future of Browsing</h1>
-  
+  <!-- 01 SUMMARY -->
+  <section class="sec" id="summary">
+    <div class="sec-head">
+      <div class="sec-no">01</div>
+      <div class="sec-name">Summary</div>
+    </div>
+    <div class="lede">
+      Senior software engineer with 10+ years building production systems, now focused on Gen-AI and multi-agent applications. I design LLM-native systems where agents orchestrate at scale, outputs stay verifiable and auditable, and infrastructure degrades gracefully under failure. Deep enterprise experience across life sciences (Pfizer) and financial/enterprise (PwC), with end-to-end ownership from data pipeline through agent orchestration, LLM integration, and Kubernetes deployment.
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section id="features" class="features-section">
-   
-    <div class="features-list">
-      <div class="feature-item">
-        <h3>Intelligent Navigation</h3>
-        <p>Let your site browsing experience become more intuitive and dynamic.</p>
+  <!-- 02 SKILLS -->
+  <section class="sec" id="skills">
+    <div class="sec-head">
+      <div class="sec-no">02</div>
+      <div class="sec-name">Skills</div>
+    </div>
+    <div>
+      <div class="skill-row"><div class="skill-k">Gen AI / LLM</div><div class="skill-v">Multi-agent orchestration, RAG, structured output, evals, MCP, prompt versioning, human-in-the-loop, LangChain, LangGraph, Langfuse, GPT-4o, embeddings</div></div>
+      <div class="skill-row"><div class="skill-k">Languages</div><div class="skill-v">Python, TypeScript / JavaScript, SQL</div></div>
+      <div class="skill-row"><div class="skill-k">Backend</div><div class="skill-v">FastAPI, FastStream, asyncio, Pydantic, REST, httpx</div></div>
+      <div class="skill-row"><div class="skill-k">Data &amp; Messaging</div><div class="skill-v">PostgreSQL, pgvector, MongoDB, Redis, RabbitMQ, Kafka, DynamoDB, S3</div></div>
+      <div class="skill-row"><div class="skill-k">Cloud &amp; DevOps</div><div class="skill-v">AWS (Lambda, API Gateway, Step Functions, ECS, S3, DynamoDB, CloudWatch), Azure (Entra ID, Key Vault, Event Hub), Docker, Kubernetes, Argo CD, Helm, GitHub Actions</div></div>
+      <div class="skill-row"><div class="skill-k">ML / CV / NLP</div><div class="skill-v">PyTorch, OpenCV, MediaPipe, SAM2, SpaCy, NLTK, Tesseract</div></div>
+      <div class="skill-row"><div class="skill-k">Frontend</div><div class="skill-v">Vue 3 (Composition API), Vite, SSE</div></div>
+    </div>
+  </section>
+
+  <!-- 03 EXPERIENCE -->
+  <section class="sec" id="experience">
+    <div class="sec-head">
+      <div class="sec-no">03</div>
+      <div class="sec-name">Experience</div>
+    </div>
+    <div class="jobs">
+
+      <article>
+        <div class="job-head">
+          <div class="job-title">Forward Deployed Engineer <span class="lead">(Gen AI)</span></div>
+          <div class="job-when">2025 – Present</div>
+        </div>
+        <div class="job-org">PwC · Tampa, FL</div>
+        <div class="bullets">
+          <div class="bullet"><span class="dot"></span><div class="btxt"><strong>Multi-agent threat-intelligence platform</strong> — Designed and shipped a production system that autonomously maps an organization's external attack surface (subsidiaries, domains, subdomains, IP ranges/ASNs, open ports), replacing manual reconnaissance with an LLM-augmented agent swarm.</div></div>
+          <div class="bullet"><span class="dot"></span><div class="btxt">Architected it as containerized microservices — a FastAPI supervisor orchestrating FastStream worker agents over RabbitMQ RPC, with PostgreSQL + pgvector and Redis — and designed a resilient dispatch layer that runs the identical pipeline distributed or in-process as a fallback, so a broker outage degrades gracefully instead of hard-failing the scan.</div></div>
+          <div class="bullet"><span class="dot"></span><div class="btxt">Built a deterministic-tools-first, LLM-as-gap-filler pattern with strict JSON-schema output, a JSON-repair layer, and Langfuse tracing/evals; streamed live progress to a Vue 3 SPA via SSE over Redis, and shipped to Kubernetes via Argo CD GitOps with a GitHub Actions pipeline building 7 services in parallel across four environments.</div></div>
+          <div class="bullet"><span class="dot"></span><div class="btxt"><strong>AI-assisted risk &amp; compliance service</strong> — Built a FastAPI + MongoDB microservice that grounds risk and control generation in NIST 800-53 (~1,196 controls) using a deterministic-retrieval → LLM-judgment → human-in-the-loop pipeline, keeping every AI output auditor-defensible.</div></div>
+          <div class="bullet"><span class="dot"></span><div class="btxt">Developed a multimodal evidence-review pipeline (vision models for screenshots, text extraction for documents) that rates control effectiveness on a 0–100 scale, backed by an offline eval harness scoring AI output against ground truth; exposed the REST surface as MCP tools so the same functions power both the product and a tool-calling agent.</div></div>
+          <div class="bullet"><span class="dot"></span><div class="btxt"><strong>LLM access-review system</strong> — Built a LangChain/LangGraph workflow that ingests user-access signals, classifies security risk with AI-generated reasoning and deterministic fallback rules, and surfaces results to managers — owning the full stack from data pipeline through LLM integration and dashboard.</div></div>
+        </div>
+      </article>
+
+      <article>
+        <div class="job-head">
+          <div class="job-title">Senior Software Engineer <span class="lead">(Tech Lead)</span></div>
+          <div class="job-when">2024 – 2025</div>
+        </div>
+        <div class="job-org">Pfizer</div>
+        <div class="bullets">
+          <div class="bullet"><span class="dot"></span><div class="btxt"><strong>Health-literacy validation tool (CLEAR)</strong> — Designed and led a linguistic-validation system that automated proofreading of scientific content, applying 50+ NLP rule checks (SpaCy, NLTK, custom Python) across grammar, terminology, tone, and regulatory compliance.</div></div>
+          <div class="bullet"><span class="dot"></span><div class="btxt">Architected it as serverless microservices on AWS Lambda orchestrated with Step Functions — REST ingestion, async processing, S3 for outputs and DynamoDB for metadata and version tracking, with CloudWatch monitoring and alerting.</div></div>
+          <div class="bullet"><span class="dot"></span><div class="btxt"><strong>Document-to-deck generation tool</strong> — Built a system that converts white papers and technical documents into PowerPoint decks using GPT-4o for summarization and sectioning and python-pptx for dynamic slide generation, with image and table extraction via PyMuPDF, Tesseract, and OpenCV.</div></div>
+        </div>
+      </article>
+
+      <article>
+        <div class="job-head">
+          <div class="job-title">Data Scientist</div>
+          <div class="job-when">Apr 2024</div>
+        </div>
+        <div class="job-org">Flexon Technologies</div>
+        <div class="bullets">
+          <div class="bullet"><span class="dot"></span><div class="btxt">Built ML and data-science pipelines in Python — data ingestion, feature engineering, and model development — delivering analyses and models into production workflows.</div></div>
+        </div>
+      </article>
+
+      <article>
+        <div class="job-head">
+          <div class="job-title">Machine Learning Engineer</div>
+          <div class="job-when">Aug 2023 – Mar 2024</div>
+        </div>
+        <div class="job-org">PinHous</div>
+        <div class="bullets">
+          <div class="bullet"><span class="dot"></span><div class="btxt">Used computer vision to extract property features from real-estate images and built recommendation engines (collaborative + content-based filtering) that increased user interaction with recommended listings by ~20%.</div></div>
+          <div class="bullet"><span class="dot"></span><div class="btxt">Set up and optimized MySQL on AWS RDS and engineered data pipelines for personalized house feeds, and directed A/B testing aimed at lifting conversion rates.</div></div>
+        </div>
+      </article>
+
+      <article>
+        <div class="job-head">
+          <div class="job-title">Computer Vision Engineer</div>
+          <div class="job-when">Sep 2019 – Aug 2021</div>
+        </div>
+        <div class="job-org">ActiveIQ</div>
+        <div class="bullets">
+          <div class="bullet"><span class="dot"></span><div class="btxt">Built deep-learning kits enabling autonomous functionality for commercial vehicles — developed a lane algorithm (gradient filters, perspective transform, custom segmentation in PyTorch) that reduced offset by 30%.</div></div>
+          <div class="bullet"><span class="dot"></span><div class="btxt">Achieved 96% pixel accuracy for assisted-driving mode on Indian roads and collaborated on sensor-fusion (camera, LiDAR, radar) strategies improving perception accuracy by ~20%.</div></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- 04 PROJECTS -->
+  <section class="sec" id="projects">
+    <div class="sec-head">
+      <div class="sec-no">04</div>
+      <div class="sec-name">Projects</div>
+    </div>
+    <div>
+      <div class="projects" style="margin-bottom:26px;">
+        <div class="proj">
+          <div class="proj-name">Only — Personal AI agent</div>
+          <a class="proj-link" href="https://github.com/shivamsharma00" target="_blank" rel="noopener">github →</a>
+          <div class="proj-desc">A software-based personal AI built on a multi-agent harness: workflow orchestration, prompt versioning, MCP integrations, local models via Ollama, and a voice pipeline routing iPhone → MacBook over Tailscale. Python.</div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Only Notes — Cross-platform notes app</div>
+          <a class="proj-link" href="https://github.com/shivamsharma00" target="_blank" rel="noopener">github →</a>
+          <div class="proj-desc">Tauri + Vue 3 + SQLite desktop app with a GitHub Actions CI/CD pipeline and macOS notarization.</div>
+        </div>
       </div>
-      <div class="feature-item">
-        <h3>Personalized Efficiency</h3>
-        <p>Experience tailored suggestions and shortcuts that adapt to your habits.</p>
-      </div>
-      <div class="feature-item">
-        <h3>Streamlined Workflow</h3>
-        <p>We reduce time-consuming steps so you can focus on what truly matters.</p>
-      </div>
-      <div class="feature-item">
-        <h3>Privacy-First Design</h3>
-        <p>Your data is secure—always. We prioritize protection at every step.</p>
+
+      <div class="sec-sub" style="margin:0 0 4px;">// research_&_academic</div>
+      <div class="projects">
+        <div class="proj">
+          <div class="proj-name">Bidirectional Search <span class="proj-tag">heuristics</span></div>
+          <a class="proj-link" href="https://github.com/TheTechGuy98/Bi-Directional-Search" target="_blank" rel="noopener">github →</a>
+          <div class="proj-desc">Bi-directional search with MM0 / MM heuristics, benchmarked for effectiveness across complex search spaces.</div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Authorship Obfuscation <span class="proj-tag">nlp</span></div>
+          <a class="proj-link" href="https://github.com/shivamsharma00/Avengers_ensemble" target="_blank" rel="noopener">github →</a>
+          <div class="proj-desc">Ensemble of SVM classifiers with the MUTANT-X obfuscator — high METEOR scores while cutting obfuscation time to ~1 minute.</div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Proximal Training for GANs <span class="proj-tag">generative</span></div>
+          <a class="proj-link" href="https://github.com/shivamsharma00/wgan" target="_blank" rel="noopener">github →</a>
+          <div class="proj-desc">Compared proximal training against other GAN methods, producing high-quality CelebA samples with Wasserstein GANs.</div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Deep Q-Learning — Autonomous Navigation <span class="proj-tag">rl</span></div>
+          <a class="proj-link" href="https://github.com/shivamsharma00" target="_blank" rel="noopener">github →</a>
+          <div class="proj-desc">Deep Q-learning navigation policy, simulating successful car movement in the CARLA simulator.</div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Camera Precision for Mono-SLAM <span class="proj-tag">perception</span></div>
+          <a class="proj-link" href="https://github.com/shivamsharma00" target="_blank" rel="noopener">github →</a>
+          <div class="proj-desc">Investigated how camera resolution and field of view affect MonoSLAM precision, with recommendations for optimal selection.</div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Collective Movement in Robot Swarms <span class="proj-tag">multi-robot</span></div>
+          <a class="proj-link" href="https://github.com/shivamsharma00/multiRobotFlockMotion" target="_blank" rel="noopener">github →</a>
+          <div class="proj-desc">Simulated collective movement of multiple robots in MATLAB using collective localization.</div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">6-DOF Robotic Arm <span class="proj-tag">embedded</span></div>
+          <a class="proj-link" href="https://github.com/shivamsharma00" target="_blank" rel="noopener">github →</a>
+          <div class="proj-desc">Designed, 3D-printed and controlled a 6-DOF robotic arm with MATLAB + Arduino, improving kinematic accuracy.</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Waitlist Section -->
-  <section id="waitlist" class="waitlist-section">
-    <h2>Stay Tuned</h2>
-    <p>
-      We’re on the verge of launching something transformative at Galeetch. While our technology remains under wraps, every detail is crafted to enhance your browsing experience from the very first visit.
-    </p>
-    <form id="waitlist-form">
-      <input type="email" id="email" placeholder="Enter your email" required/>
-      <button type="submit">Join the Waitlist</button>
-    </form>
+  <!-- 05 WRITING -->
+  <section class="sec" id="writing">
+    <div class="sec-head">
+      <div class="sec-no">05</div>
+      <div class="sec-name">Writing</div>
+    </div>
+    <div>
+      <div class="writing">
+        <a class="post" href="https://medium.com/p/0b0e18dc9df5" target="_blank" rel="noopener">
+          <div class="post-top"><span>essay</span><span>medium</span></div>
+          <div class="post-title">RAG and Few-Shot Prompting in LangChain — Implementation</div>
+          <div class="post-arrow">read →</div>
+        </a>
+        <a class="post" href="https://medium.com/p/0921ad50ef34" target="_blank" rel="noopener">
+          <div class="post-top"><span>essay</span><span>medium</span></div>
+          <div class="post-title">Binary Classification for a Kaggle Competition — SVM, LightGBM, Decision Tree, Gradient Boosting &amp; CatBoost</div>
+          <div class="post-arrow">read →</div>
+        </a>
+        <a class="post" href="https://medium.com/p/9f9871377bbf" target="_blank" rel="noopener">
+          <div class="post-top"><span>essay</span><span>medium</span></div>
+          <div class="post-title">SQL and RDBMS Crash Course — Part 1</div>
+          <div class="post-arrow">read →</div>
+        </a>
+        <a class="post" href="https://medium.com/@shivamsharma00" target="_blank" rel="noopener">
+          <div class="post-top"><span>index</span><span>medium</span></div>
+          <div class="post-title">All writing on Medium — notes on LLMs, ML &amp; engineering.</div>
+          <div class="post-arrow">view all →</div>
+        </a>
+      </div>
+      <a class="writing-all" href="https://medium.com/@shivamsharma00" target="_blank" rel="noopener">medium.com/@shivamsharma00</a>
+    </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Galeetch. All rights reserved.</p>
-  </footer>
+  <!-- 06 EDUCATION -->
+  <section class="sec" id="education">
+    <div class="sec-head">
+      <div class="sec-no">06</div>
+      <div class="sec-name">Education</div>
+    </div>
+    <div>
+      <div class="edu-row">
+        <div>
+          <div class="edu-deg">M.S., Robotics &amp; Autonomous Systems <span class="spec">(AI Specialization)</span></div>
+          <div class="edu-org">Arizona State University</div>
+        </div>
+        <div class="edu-when">2021 – 2023</div>
+      </div>
+      <div class="edu-row">
+        <div>
+          <div class="edu-deg">B.Tech, Computer Science &amp; Engineering</div>
+          <div class="edu-org">Rajasthan Technical University</div>
+        </div>
+        <div class="edu-when">2015 – 2019</div>
+      </div>
+    </div>
+  </section>
 
-  <!-- Link to external JS -->
-  <script src="script.js"></script>
+  <!-- 07 CONTACT -->
+  <section class="sec" id="contact" style="border-bottom:none;">
+    <div class="sec-head">
+      <div class="sec-no">07</div>
+      <div class="sec-name">Contact</div>
+    </div>
+    <div class="contact-grid">
+      <div class="crow"><div class="ck">Email</div><div class="cv"><a href="mailto:sharma.shivam3242@gmail.com">sharma.shivam3242@gmail.com</a></div></div>
+      <div class="crow"><div class="ck">LinkedIn</div><div class="cv"><a href="https://www.linkedin.com/in/shivamsharma00/" target="_blank" rel="noopener">linkedin.com/in/shivamsharma00</a></div></div>
+      <div class="crow"><div class="ck">GitHub</div><div class="cv"><a href="https://github.com/shivamsharma00" target="_blank" rel="noopener">github.com/shivamsharma00</a></div></div>
+      <div class="crow"><div class="ck">Twitter / X</div><div class="cv"><a href="https://twitter.com/galeetch" target="_blank" rel="noopener">twitter.com/galeetch</a></div></div>
+      <div class="crow"><div class="ck">Medium</div><div class="cv"><a href="https://medium.com/@shivamsharma00" target="_blank" rel="noopener">medium.com/@shivamsharma00</a></div></div>
+    </div>
+  </section>
+
+  <div class="eof">// end_of_file — built in Tampa · galeetch.com</div>
+
+</main>
+
+<script>
+/* Agent-workflow generative background — vanilla port of the resume's canvas sim. */
+(function(){
+  var cv = document.getElementById('bg');
+  var ctx = cv.getContext('2d');
+  var CFG = { complexity:'balanced', speed:1, intensity:0.92 };
+  var TOKENS = [
+    "analyzing context","tool_call: search()","embedding query…","ranking candidates",
+    "schema valid ✓","retry w/ backoff","spawn agent[3]","reduce tokens","vector match 0.92",
+    "plan: 4 steps","await broker","json.repair()","eval score: 87","route → supervisor",
+    "stream chunk","ctx window 8k","reasoning…","verify output","fallback rules","dispatch task",
+    "merge branches","checkpoint saved","k8s pod ready","rag top_k=5","human review queued",
+    "grounding in NIST","parse response","assert invariant","reflect & refine","confidence 0.81",
+    "summarize section","map attack surface","resolve subdomains","classify risk","emit SSE event",
+    "cache hit","backpressure ok","tokenize input","cosine sim 0.88","prompt v2.3","guardrail pass",
+    "decompose goal","observe → act","thought: need data","calling MCP tool","aggregate results",
+    "sign output","grade evidence","plan revised","done."
+  ];
+  var edgeDur=0.72, pulseDur=0.9;
+  var nodes=[], edges=[], pulses=[], buildEnd=0, lastPulseT=0;
+  var W=0,H=0,lastW=0,lastH=0,startTime=performance.now();
+
+  function pick(){ return TOKENS[Math.floor(Math.random()*TOKENS.length)]; }
+  function nearest(arr,x){ var best=arr[0],bd=Infinity; for(var i=0;i<arr.length;i++){var d=Math.abs(arr[i].x-x); if(d<bd){bd=d;best=arr[i];}} return best; }
+
+  function buildGraph(W,H){
+    var perLevelMap={ calm:[1,1,2,2,2,3,3,3], balanced:[1,1,2,2,3,3,4,4,5], dense:[1,2,2,3,4,4,5,5,6,6] };
+    var perLevel=perLevelMap[CFG.complexity]||perLevelMap.balanced;
+    var L=perLevel.length, marginX=W*0.10, marginY=H*0.12, usableH=H-2*marginY;
+    nodes=[]; edges=[]; var levelNodes=[];
+    for(var lv=0;lv<L;lv++){
+      var count=perLevel[lv];
+      var y=marginY+(L===1?0:usableH*(lv/(L-1)));
+      var arr=[];
+      for(var i=0;i<count;i++){
+        var frac=count===1?0.5:i/(count-1);
+        var x=marginX+(W-2*marginX)*frac;
+        x+=(Math.random()-0.5)*W*0.06;
+        var yy=y+(Math.random()-0.5)*usableH*0.05;
+        var node={id:nodes.length,lv:lv,x:x,y:yy,revealAt:0,tokenText:pick(),tokenStart:-99};
+        arr.push(node); nodes.push(node);
+      }
+      levelNodes.push(arr);
+    }
+    var t=0.9;
+    levelNodes[0][0].revealAt=t; levelNodes[0][0].tokenStart=t+edgeDur;
+    for(var lv2=1;lv2<L;lv2++){
+      var gap=Math.max(0.5,1.55-lv2*0.12);
+      var prev=levelNodes[lv2-1];
+      var cur=levelNodes[lv2];
+      for(var j=0;j<cur.length;j++){
+        var nd=cur[j]; t+=gap; nd.revealAt=t; nd.tokenStart=t+edgeDur;
+        var p1=nearest(prev,nd.x);
+        edges.push({from:p1,to:nd,revealAt:t});
+        if(lv2>=3 && prev.length>1 && Math.random()<0.4){
+          var p2=prev[Math.floor(Math.random()*prev.length)];
+          if(p2.id!==p1.id) edges.push({from:p2,to:nd,revealAt:t+0.18});
+        }
+      }
+    }
+    buildEnd=t+edgeDur+4.5;
+  }
+
+  function resize(){
+    var dpr=Math.min(window.devicePixelRatio||1,2);
+    var doc=document.documentElement;
+    var nw=doc.clientWidth;
+    var nh=Math.max(doc.scrollHeight, window.innerHeight);
+    var changed=Math.abs(lastW-nw)>2 || Math.abs(lastH-nh)>2;
+    cv.style.width=nw+'px'; cv.style.height=nh+'px';
+    if(changed){
+      lastW=nw; lastH=nh;
+      cv.width=Math.round(nw*dpr); cv.height=Math.round(nh*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      W=nw; H=nh; buildGraph(W,H);
+    }
+  }
+
+  function draw(now){
+    ctx.clearRect(0,0,W,H);
+    var I=CFG.intensity, speed=CFG.speed;
+    var t=((now-startTime)/1000)*speed;
+    function ink(a){ return 'rgba(22,22,26,'+(Math.max(0,a)*I)+')'; }
+
+    if(t>buildEnd && t-lastPulseT>1.05){
+      var e=edges[Math.floor(Math.random()*edges.length)];
+      if(e) pulses.push({edge:e,startT:t,fired:false});
+      lastPulseT=t;
+    }
+
+    for(var i=0;i<edges.length;i++){
+      var ed=edges[i];
+      if(t<ed.revealAt) continue;
+      var p=Math.min(1,(t-ed.revealAt)/edgeDur);
+      var x2=ed.from.x+(ed.to.x-ed.from.x)*p;
+      var y2=ed.from.y+(ed.to.y-ed.from.y)*p;
+      ctx.lineWidth=1; ctx.strokeStyle=ink(0.11);
+      ctx.beginPath(); ctx.moveTo(ed.from.x,ed.from.y); ctx.lineTo(x2,y2); ctx.stroke();
+      if(p<1){ ctx.fillStyle=ink(0.4); ctx.beginPath(); ctx.arc(x2,y2,2.3,0,6.2832); ctx.fill(); }
+    }
+
+    for(var k=0;k<pulses.length;k++){
+      var pl=pulses[k];
+      var raw=(t-pl.startT)/pulseDur;
+      if(raw<0||raw>1.25) continue;
+      var pe=pl.edge, pp=Math.min(1,raw);
+      var px=pe.from.x+(pe.to.x-pe.from.x)*pp, py=pe.from.y+(pe.to.y-pe.from.y)*pp;
+      var tb=Math.max(0,pp-0.2);
+      var tx=pe.from.x+(pe.to.x-pe.from.x)*tb, ty=pe.from.y+(pe.to.y-pe.from.y)*tb;
+      ctx.lineWidth=1.5; ctx.strokeStyle=ink(0.3);
+      ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(px,py); ctx.stroke();
+      ctx.fillStyle=ink(0.46); ctx.beginPath(); ctx.arc(px,py,2.5,0,6.2832); ctx.fill();
+      if(!pl.fired && raw>=1){ pl.fired=true; pe.to.tokenStart=t; }
+    }
+    pulses=pulses.filter(function(pl){ return (t-pl.startT)/pulseDur<=1.25; });
+
+    ctx.textBaseline='middle';
+    for(var n=0;n<nodes.length;n++){
+      var nd=nodes[n];
+      if(t<nd.revealAt) continue;
+      var appear=Math.min(1,(t-nd.revealAt)/0.4);
+      ctx.fillStyle=ink(0.16*appear);
+      ctx.fillRect(nd.x-2.2,nd.y-2.2,4.4,4.4);
+      ctx.lineWidth=1; ctx.strokeStyle=ink(0.11*appear);
+      ctx.beginPath(); ctx.arc(nd.x,nd.y,6,0,6.2832); ctx.stroke();
+      var ts=nd.tokenStart;
+      if(ts>-90){
+        var dt=t-ts;
+        var typeDur=Math.max(0.4,nd.tokenText.length*0.045);
+        var hold=2.6, fade=1.2;
+        if(dt>=0 && dt<typeDur+hold+fade){
+          var chars=Math.min(nd.tokenText.length,Math.floor((dt/typeDur)*nd.tokenText.length));
+          var str=nd.tokenText.slice(0,chars);
+          var a=0.17;
+          if(dt>typeDur+hold) a=0.17*(1-(dt-typeDur-hold)/fade);
+          ctx.font='11px "IBM Plex Mono", ui-monospace, monospace';
+          ctx.fillStyle=ink(a);
+          ctx.fillText(str,nd.x+11,nd.y);
+          if(dt<typeDur){
+            var w=ctx.measureText(str).width;
+            ctx.fillStyle=ink(0.3);
+            ctx.fillRect(nd.x+12+w,nd.y-5,5,10);
+          }
+        }
+      }
+    }
+  }
+
+  var raf;
+  function loop(now){ try{ draw(now); }catch(e){ return; } raf=requestAnimationFrame(loop); }
+  window.addEventListener('resize', resize);
+  window.addEventListener('load', resize);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(resize);
+  [250,700,1500].forEach(function(ms){ setTimeout(resize,ms); });
+  resize();
+  raf=requestAnimationFrame(loop);
+
+  /* smooth-scroll for in-page nav */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(ev){
+      var id=a.getAttribute('href');
+      if(id.length>1){
+        var el=document.querySelector(id);
+        if(el){ ev.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
