@@ -69,17 +69,39 @@
   .rail .r-tag{writing-mode:vertical-rl;font-family:var(--mono);font-size:9px;
     letter-spacing:3px;color:var(--faint);text-transform:uppercase;}
 
-  /* ---------- top nav (turns to night sky after hero) ---------- */
+  /* ---------- top nav (dissolves into a night sky after the hero) ---------- */
   nav{position:fixed;top:0;left:var(--rail);right:0;z-index:40;
     display:flex;justify-content:space-between;align-items:center;
     padding:16px var(--gutter) 14px calc(var(--gutter) - 18px);
-    border-bottom:1px solid var(--hair);overflow:hidden;
+    border-bottom:1px solid var(--hair);overflow:visible;
     background:linear-gradient(180deg,rgba(7,9,8,.72),rgba(7,9,8,.06));
-    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
-  nav .nightsky{position:absolute;inset:0;z-index:-1;
-    background:url('assets/stars.webp') center 12%/cover no-repeat;opacity:0;
-    transition:opacity 1.2s ease;}
-  body.night nav .nightsky{opacity:.6;}
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    transition:background .9s ease,border-color .9s ease;}
+
+  /* the sky plate hangs BELOW the bar and dissolves into the page with a
+     soft, uneven edge — union of a vertical fade + three offset lobes,
+     so there is no banner / rectangle silhouette anywhere. */
+  nav .nightsky{position:absolute;left:0;right:0;top:0;height:265%;z-index:-1;
+    pointer-events:none;opacity:0;transition:opacity 1.2s ease;
+    background:
+      linear-gradient(180deg,rgba(6,9,17,.88) 0%,rgba(6,9,17,.66) 30%,
+        rgba(6,9,17,.30) 62%,rgba(6,9,17,0) 100%),
+      url('assets/stars-nav.webp') center 46%/cover no-repeat;
+    -webkit-mask-image:
+      linear-gradient(180deg,#000 0 34%,rgba(0,0,0,.56) 56%,rgba(0,0,0,0) 94%),
+      radial-gradient(50% 44% at 13% 26%,#000 6%,rgba(0,0,0,0) 100%),
+      radial-gradient(38% 56% at 40% 20%,#000 4%,rgba(0,0,0,0) 100%),
+      radial-gradient(44% 38% at 68% 30%,#000 6%,rgba(0,0,0,0) 100%),
+      radial-gradient(40% 50% at 90% 22%,#000 4%,rgba(0,0,0,0) 100%);
+    mask-image:
+      linear-gradient(180deg,#000 0 34%,rgba(0,0,0,.56) 56%,rgba(0,0,0,0) 94%),
+      radial-gradient(50% 44% at 13% 26%,#000 6%,rgba(0,0,0,0) 100%),
+      radial-gradient(38% 56% at 40% 20%,#000 4%,rgba(0,0,0,0) 100%),
+      radial-gradient(44% 38% at 68% 30%,#000 6%,rgba(0,0,0,0) 100%),
+      radial-gradient(40% 50% at 90% 22%,#000 4%,rgba(0,0,0,0) 100%);}
+  body.night nav .nightsky{opacity:1;}
+  body.night nav{background:linear-gradient(180deg,rgba(7,9,8,.30),rgba(7,9,8,0));
+    border-bottom-color:transparent;}
   .brand{font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:2px;
     color:var(--fog);text-transform:uppercase;}
   .brand .dim{color:var(--faint);}
@@ -201,11 +223,19 @@
   .web-ch{overflow:visible;}
   .web-bg{position:sticky;top:0;height:100vh;margin-bottom:-100vh;z-index:0;overflow:hidden;
     pointer-events:none;}
-  .web-bg canvas{position:absolute;inset:0;}
-  .web-scrim{position:absolute;inset:0;
-    background:linear-gradient(90deg,rgba(7,9,8,0) 0%,rgba(7,9,8,.88) 20%,rgba(7,9,8,.88) 66%,rgba(7,9,8,0) 88%);
-    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 10%,#000 90%,transparent 100%);
-    mask-image:linear-gradient(180deg,transparent 0,#000 10%,#000 90%,transparent 100%);}
+  /* the constellation is dimmed behind the copy with a mask on the canvas
+     itself rather than a dark overlay — that way the row labels out in the
+     margins stay at full strength and legible */
+  .web-bg canvas{position:absolute;inset:0;
+    -webkit-mask-image:
+      linear-gradient(90deg,#000 0 17%,rgba(0,0,0,.15) 23%,rgba(0,0,0,.15) 77%,#000 83% 100%),
+      linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:
+      linear-gradient(90deg,#000 0 17%,rgba(0,0,0,.15) 23%,rgba(0,0,0,.15) 77%,#000 83% 100%),
+      linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
+    mask-composite:intersect;}
+  .web-scrim{display:none;}
   .web-fg{position:relative;z-index:2;}
 
   /* ---------- skills ---------- */
@@ -241,10 +271,10 @@
 
   /* ---------- interstitial ---------- */
   .inter{position:relative;height:78vh;min-height:460px;overflow:hidden;border-bottom:1px solid var(--hair);}
-  .inter img{position:absolute;inset:0;width:100%;height:120%;object-fit:cover;object-position:center 40%;
-    filter:saturate(.95) brightness(.86);will-change:transform;}
+  .inter img{position:absolute;inset:0;width:100%;height:120%;object-fit:cover;object-position:center 46%;
+    filter:saturate(1) brightness(.94);will-change:transform;}
   .inter .i-scrim{position:absolute;inset:0;
-    background:linear-gradient(180deg,var(--ink0) 0%,rgba(7,9,8,.14) 30%,rgba(7,9,8,.28) 70%,var(--ink0) 100%);}
+    background:linear-gradient(180deg,var(--ink0) 0%,rgba(7,9,8,.10) 26%,rgba(7,9,8,.22) 62%,rgba(7,9,8,.96) 100%);}
   .inter .i-inner{position:absolute;left:0;right:0;bottom:clamp(40px,9vh,90px);z-index:2;}
   .inter .i-quote{font-size:clamp(22px,3.4vw,42px);font-weight:330;font-style:italic;
     color:var(--fog);max-width:640px;line-height:1.3;text-shadow:0 2px 30px rgba(0,0,0,.6);}
@@ -290,8 +320,12 @@
   .edu-org{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:5px;}
   .edu-when{font-family:var(--mono);font-size:10.5px;letter-spacing:2px;color:var(--dim);}
 
-  /* ---------- off hours: film diptych + strip ---------- */
-  .diptych{display:grid;grid-template-columns:1.7fr 1fr;gap:18px;margin-top:36px;align-items:stretch;}
+  /* ---------- off hours: single field recording + strip ---------- */
+  /* width is capped so the 1080-wide source never has to be upscaled on a
+     retina screen — that is what keeps it crisp */
+  .solofilm{margin-top:36px;display:flex;justify-content:center;}
+  .solofilm .vwrap{width:min(430px,84vw);}
+  .solofilm .vwrap video{height:auto;}
   .vwrap{position:relative;overflow:hidden;background:transparent;}
   .vwrap video{display:block;width:100%;height:100%;object-fit:cover;
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),
@@ -313,12 +347,30 @@
 
   /* ---------- contact / footer ---------- */
   .outro{position:relative;overflow:hidden;border-bottom:none;}
-  .outro-img{position:absolute;inset:0;z-index:0;}
-  .outro-img img{width:100%;height:100%;object-fit:cover;object-position:center 30%;
-    filter:brightness(.88) saturate(1.05);}
+  /* the sky plate is masked, not boxed — it bleeds in from the top in two
+     uneven lobes instead of starting on a hard horizontal line */
+  .outro-img{position:absolute;inset:0;z-index:0;
+    -webkit-mask-image:
+      linear-gradient(180deg,rgba(0,0,0,0) 0%,#000 14%,#000 100%),
+      radial-gradient(58% 26% at 24% 3%,#000 10%,rgba(0,0,0,0) 100%),
+      radial-gradient(46% 20% at 72% 1%,#000 8%,rgba(0,0,0,0) 100%);
+    mask-image:
+      linear-gradient(180deg,rgba(0,0,0,0) 0%,#000 14%,#000 100%),
+      radial-gradient(58% 26% at 24% 3%,#000 10%,rgba(0,0,0,0) 100%),
+      radial-gradient(46% 20% at 72% 1%,#000 8%,rgba(0,0,0,0) 100%);}
+  .outro-img img{width:100%;height:100%;object-fit:cover;object-position:center 42%;}
   .outro-scrim{position:absolute;inset:0;z-index:1;
-    background:linear-gradient(180deg,var(--ink0) 0%,rgba(7,9,8,.42) 45%,rgba(7,9,8,.66) 100%);}
+    background:linear-gradient(180deg,rgba(7,9,8,.94) 0%,rgba(7,9,8,.46) 15%,
+      rgba(7,9,8,.14) 38%,rgba(7,9,8,.20) 66%,rgba(7,9,8,.62) 100%);}
   .outro .wrap{position:relative;z-index:2;}
+  .outro h2.big,.outro .ch-label .txt,.outro .ch-label .no{
+    text-shadow:0 2px 26px rgba(0,0,0,.8),0 0 60px rgba(0,0,0,.55);}
+  .outro .crow{border-top-color:rgba(238,241,238,.16);}
+  .outro .crow:last-child{border-bottom-color:rgba(238,241,238,.16);}
+  .outro .ck{color:var(--moss);text-shadow:0 1px 10px rgba(0,0,0,.85);}
+  .outro .cv a{color:var(--fog);text-shadow:0 1px 10px rgba(0,0,0,.85);}
+  .outro footer{color:var(--dim);text-shadow:0 1px 12px rgba(0,0,0,.9);
+    border-top-color:rgba(238,241,238,.14);}
   .contact-rows{margin-top:38px;max-width:660px;}
   .crow{display:grid;grid-template-columns:130px 1fr;gap:16px;font-family:var(--mono);
     font-size:12px;padding:12px 0;border-top:1px solid var(--hair);}
@@ -345,8 +397,7 @@
     .job-when{padding-top:0;}
     .brief-grid{grid-template-columns:1fr;}
     .brief-grid .figure{max-width:420px;}
-    .diptych{grid-template-columns:1fr;}
-    .vwrap.tall{min-height:0;max-height:70vh;}
+    .solofilm .vwrap{width:min(360px,80vw);}
     .strip{grid-template-columns:1fr;}
     .strip .figure img{aspect-ratio:4/3;}
     #stack{height:240vh;}
@@ -403,8 +454,8 @@
         <source src="assets/hero.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="hero-night" id="heronight"><img src="assets/stars.webp" alt=""
-      onerror="this.onerror=null;this.src='assets/stars.jpg'"></div>
+    <div class="hero-night" id="heronight"><img src="assets/stars-hero.webp" alt=""
+      onerror="this.onerror=null;this.src='assets/stars-hero.jpg'"></div>
     <div class="hero-scrim"></div>
     <div class="hero-grid" id="herogrid"></div>
     <div class="hero-inner wrap">
@@ -690,14 +741,8 @@
     <div class="wrap">
       <div class="ch-label"><span class="no">ch. 07</span><span class="rule"></span><span class="txt" data-type="the off hours"></span></div>
       <h2 class="big rv">Fog, granite, firelight — <span class="ital">recharging.</span></h2>
-      <div class="diptych rv d1">
+      <div class="solofilm rv d1">
         <div class="vwrap">
-          <video id="film" muted loop playsinline preload="none" poster="assets/film-poster.jpg"
-            data-src="assets/film.mp4"></video>
-          <span class="f-cap">field_recording_001 — light through the trees</span>
-          <span class="f-rec">rec</span>
-        </div>
-        <div class="vwrap tall">
           <video id="scrubv" muted playsinline preload="auto" poster="assets/scrub-poster.jpg">
             <source src="assets/scrub.mp4" type="video/mp4">
           </video>
@@ -730,7 +775,7 @@
 
   <!-- ============ CH 08 SIGNAL / CONTACT ============ -->
   <section class="ch outro" id="signal">
-    <div class="outro-img"><img src="assets/stars.webp" alt=""
+    <div class="outro-img"><img src="assets/stars.webp" alt="" loading="lazy"
       onerror="this.onerror=null;this.src='assets/stars.jpg'"></div>
     <div class="outro-scrim"></div>
     <div class="wrap">
@@ -964,21 +1009,6 @@
   },{threshold:0.25});
   document.querySelectorAll('section.ch').forEach(function(s){ io3.observe(s); });
 
-  /* ---------- lazy film loop ---------- */
-  (function(){
-    var v=document.getElementById('film');
-    if(!v) return;
-    var vio=new IntersectionObserver(function(ents){
-      ents.forEach(function(e){
-        if(e.isIntersecting){
-          if(!v.src){ v.src=v.getAttribute('data-src'); }
-          v.play().catch(function(){});
-        } else { v.pause(); }
-      });
-    },{threshold:0.15,rootMargin:'200px 0px'});
-    vio.observe(v);
-  })();
-
   /* ================= WEB (agent constellation) ================= */
   function WebBG(canvas){
     var ctx=canvas.getContext('2d');
@@ -1062,27 +1092,73 @@
         ctx.fillStyle=fog(mode==='collapse'?0.5:0.32);
         ctx.fillRect(n.x-1.8,n.y-1.8,3.6,3.6);
       });
-      /* bursts: converge + ring + ghost label */
+      /* ---- labels: pinned to the row / job they belong to ----
+         Position is recomputed every frame from the anchor element's live
+         rect, so the label rides along with its row while the page scrolls
+         instead of being dropped at a random spot in the pinned canvas.
+         It also holds for as long as the row is on screen, so every label
+         is actually readable. */
+      var hostRect=holder.getBoundingClientRect();
+      var vh=window.innerHeight||H;
       bursts=bursts.filter(function(bu){
-        var bt=t-bu.s;
-        if(bt>2.6) return false;
-        if(bt<0.5){
+        var live=bu.el.getBoundingClientRect();
+        var visible = mode!=='collapse' && live.bottom>10 && live.top<vh-10;
+        if(visible && !bu.wasVisible){ bu.enterT=t; }      /* replay on re-entry */
+        bu.wasVisible=visible;
+        bu.a += ((visible?1:0)-bu.a)*0.07;
+        if(!visible && bu.a<0.015){ if(mode==='collapse') return false; return true; }
+
+        var anc=bu.anchor.getBoundingClientRect();
+        var y=clamp(anc.top+anc.height/2-hostRect.top, 40, H-40);
+        var bt=t-bu.enterT;
+        var a=bu.a;
+
+        /* pick the margin beside the text column; never paint over the copy */
+        var gapR=hostRect.right-live.right, gapL=live.left-hostRect.left;
+        var pad=28, base=W<1180?13:15, side=bu.side, align, x, room;
+        if(side==='r' && gapR-pad>44){ align='left';  x=live.right-hostRect.left+pad; room=gapR-pad-10; }
+        else if(gapL-pad>44){        align='right'; x=live.left -hostRect.left-pad; room=gapL-pad-10; }
+        else if(gapR-pad>44){        align='left';  x=live.right-hostRect.left+pad; room=gapR-pad-10; }
+        else { room=0; }
+
+        var txt=bu.label.toUpperCase(), fs=base, tw=0;
+        if(room>0){
+          ctx.font='500 '+fs+'px "IBM Plex Mono", monospace';
+          tw=ctx.measureText(txt).width;
+          if(tw>room){ fs=Math.max(9,Math.floor(fs*room/tw)); ctx.font='500 '+fs+'px "IBM Plex Mono", monospace';
+                       tw=ctx.measureText(txt).width; }
+          if(tw>room) room=0;                       /* still won't fit — drop the text */
+        }
+
+        /* anchor point the swarm reacts to: the margin slot, or the row edge */
+        var ax = room>0 ? (align==='left'? x+tw*0.5 : x-tw*0.5)
+                        : (side==='r'? Math.min(W-24, live.right-hostRect.left) : Math.max(24, live.left-hostRect.left));
+        var ay = y-4;
+
+        if(bt<0.6){
           nodes.slice(bu.k,bu.k+9).forEach(function(n){
-            n.hx+=(bu.x-n.x)*0.012; n.hy+=(bu.y-n.y)*0.012;
+            n.hx+=(ax-n.x)*0.012; n.hy+=(ay-n.y)*0.012;
           });
         }
-        var rr=bt*150, ra=Math.max(0,0.32-bt*0.14);
-        ctx.lineWidth=1;ctx.strokeStyle=moss(ra);
-        ctx.beginPath();ctx.arc(bu.x,bu.y,rr,0,6.2832);ctx.stroke();
-        var chars=Math.min(bu.label.length,Math.floor(bt/0.045));
-        var str=bu.label.slice(0,chars);
-        var la=bt<1.8?0.5:Math.max(0,0.5-(bt-1.8)*0.7);
-        ctx.font='600 clamp(16px,2vw,24px) "IBM Plex Mono", monospace';
-        ctx.font=(W<700?15:22)+'px "IBM Plex Mono", monospace';
-        ctx.textAlign=bu.x>W/2?'right':'left';
-        ctx.fillStyle=moss(la);
-        ctx.fillText(str.toUpperCase(),bu.x,bu.y-14);
-        ctx.textAlign='left';
+        /* one expanding ring on entry */
+        if(bt<1.7){
+          ctx.lineWidth=1;ctx.strokeStyle=moss(Math.max(0,0.30-bt*0.18)*a);
+          ctx.beginPath();ctx.arc(ax,ay,bt*140,0,6.2832);ctx.stroke();
+        }
+        if(room>0){
+          var chars=Math.min(txt.length,Math.floor(Math.max(0,bt)/0.042));
+          /* leader tick from the copy edge out to the label */
+          var e0=align==='left'? live.right-hostRect.left+5 : live.left-hostRect.left-5;
+          var e1=align==='left'? x-6 : x+6;
+          ctx.lineWidth=1;ctx.strokeStyle=moss(0.30*a);
+          ctx.beginPath();ctx.moveTo(e0,y);ctx.lineTo(e1,y);ctx.stroke();
+          ctx.fillStyle=moss(0.5*a);ctx.fillRect(e0-1.5,y-1.5,3,3);
+          ctx.textAlign=align;ctx.textBaseline='middle';
+          ctx.font='500 '+fs+'px "IBM Plex Mono", monospace';
+          ctx.fillStyle=moss(0.82*a);
+          ctx.fillText(txt.slice(0,chars),x,y);
+          ctx.textAlign='left';ctx.textBaseline='alphabetic';
+        }
         return true;
       });
       /* collapse ghost text */
@@ -1104,10 +1180,12 @@
       }
       raf=requestAnimationFrame(frame);
     }
-    this.burst=function(label,side){
+    this.burst=function(label,el,anchor,side){
       if(!W) resize();
-      bursts.push({label:label,x:side==='r'?W*0.80:W*0.16,y:H*(0.32+Math.random()*0.36),
-        s:performance.now()/1000,k:Math.floor(Math.random()*(N-9))});
+      var now=performance.now()/1000;
+      bursts.push({label:label,el:el,anchor:anchor||el,side:side,
+        s:now,enterT:now,a:0,wasVisible:false,
+        k:Math.floor(Math.random()*(N-9))});
     };
     this.collapse=function(){
       if(mode==='collapse') return;
@@ -1133,7 +1211,7 @@
     });
   }
 
-  /* skill rows: web burst + typed key */
+  /* skill rows + jobs: register a label that stays pinned to its own row */
   var sideFlip=false;
   var ioW=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
@@ -1144,8 +1222,9 @@
       var host=el.closest('.web-ch');
       var w=host?webs[host.id]:null;
       sideFlip=!sideFlip;
-      if(w) w.burst(label, sideFlip?'r':'l');
-      if(w && el.hasAttribute('data-web-last')) setTimeout(function(){ w.collapse(); }, 2600);
+      /* a job is tall — track its heading so the label sits next to the title */
+      var anchor=el.querySelector('.job-head')||el;
+      if(w) w.burst(label, el, anchor, sideFlip?'r':'l');
       var k=el.querySelector('[data-typek]');
       if(k && !k.dataset.typed){
         k.dataset.typed='1';
@@ -1154,8 +1233,19 @@
       el.classList.add('in');
       el.querySelectorAll('.rv,.ln').forEach(function(r){ r.classList.add('in'); });
     });
-  },{threshold:0.35,rootMargin:'0px 0px -12% 0px'});
+  },{threshold:0.2,rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.skill-row[data-web], .job[data-web]').forEach(function(el){ ioW.observe(el); });
+
+  /* the swarm only stands down once the last deployment is actually read */
+  (function(){
+    var end=document.getElementById('webend');
+    if(!end || !webs.fieldwork) return;
+    new IntersectionObserver(function(ents,obs){
+      ents.forEach(function(e){
+        if(e.isIntersecting){ webs.fieldwork.collapse(); obs.disconnect(); }
+      });
+    },{threshold:0,rootMargin:'0px 0px -52% 0px'}).observe(end);
+  })();
 
   /* ---------- smooth anchors ---------- */
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
