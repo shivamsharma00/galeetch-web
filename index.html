@@ -253,8 +253,8 @@
   /* ---------- contact / footer ---------- */
   .outro{position:relative;overflow:hidden;border-bottom:none;}
   .outro-img{position:absolute;inset:0;z-index:0;}
-  .outro-img img{width:100%;height:100%;object-fit:cover;object-position:center 75%;
-    filter:brightness(.5) saturate(.85);}
+  .outro-img img{width:100%;height:100%;object-fit:cover;object-position:center 30%;
+    filter:brightness(.75) saturate(1.05);}
   .outro-scrim{position:absolute;inset:0;z-index:1;
     background:linear-gradient(180deg,var(--ink0) 0%,rgba(7,9,8,.55) 45%,rgba(7,9,8,.75) 100%);}
   .outro .wrap{position:relative;z-index:2;}
@@ -269,6 +269,49 @@
     border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:14px;
     flex-wrap:wrap;font-family:var(--mono);font-size:9.5px;letter-spacing:2px;
     color:var(--faint);text-transform:uppercase;}
+
+  /* ---------- brief grid + portrait ---------- */
+  .brief-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(28px,5vw,72px);align-items:start;}
+  .figure{position:relative;overflow:hidden;border:1px solid var(--hair);}
+  .figure img{display:block;width:100%;height:auto;filter:grayscale(92%) contrast(1.04) brightness(.92);
+    transition:filter .8s ease,transform 1.2s cubic-bezier(.22,1,.36,1);transform:scale(1.04);}
+  .figure:hover img{filter:grayscale(0%) contrast(1) brightness(1);transform:scale(1.001);}
+  .figure .cap{position:absolute;left:0;right:0;bottom:0;padding:14px 16px 12px;
+    font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--fog2);
+    text-transform:uppercase;background:linear-gradient(0deg,rgba(7,9,8,.85),transparent);}
+  .figure .veil{position:absolute;inset:0;background:var(--ink0);transform:translateY(0);
+    transition:transform 1.1s cubic-bezier(.76,0,.24,1);}
+  .in .figure .veil{transform:translateY(101%);}
+
+  /* ---------- interstitial ---------- */
+  .inter{position:relative;height:78vh;min-height:460px;overflow:hidden;border-bottom:1px solid var(--hair);}
+  .inter img{position:absolute;inset:0;width:100%;height:120%;object-fit:cover;object-position:center 40%;
+    filter:saturate(.8) brightness(.75);will-change:transform;}
+  .inter .i-scrim{position:absolute;inset:0;
+    background:linear-gradient(180deg,var(--ink0) 0%,rgba(7,9,8,.25) 30%,rgba(7,9,8,.35) 70%,var(--ink0) 100%);}
+  .inter .i-inner{position:absolute;left:0;right:0;bottom:clamp(40px,9vh,90px);z-index:2;}
+  .inter .i-quote{font-size:clamp(22px,3.4vw,42px);font-weight:330;font-style:italic;
+    color:var(--fog);max-width:640px;line-height:1.3;text-shadow:0 2px 30px rgba(0,0,0,.5);}
+  .inter .i-cap{margin-top:16px;font-family:var(--mono);font-size:9.5px;letter-spacing:2.5px;
+    color:var(--fog2);text-transform:uppercase;}
+
+  /* ---------- film band + field log strip ---------- */
+  .filmband{position:relative;overflow:hidden;border:1px solid var(--hair);background:#000;}
+  .filmband video{display:block;width:100%;height:auto;opacity:.92;}
+  .filmband .f-cap{position:absolute;left:16px;bottom:12px;font-family:var(--mono);font-size:9px;
+    letter-spacing:2px;color:rgba(238,241,238,.7);text-transform:uppercase;
+    background:rgba(7,9,8,.55);padding:5px 9px;}
+  .filmband .f-rec{position:absolute;right:16px;top:12px;font-family:var(--mono);font-size:9px;
+    letter-spacing:2px;color:#e66;text-transform:uppercase;background:rgba(7,9,8,.55);padding:5px 9px;}
+  .filmband .f-rec:before{content:"●";margin-right:6px;animation:blink 1.4s steps(1) infinite;}
+  .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;}
+  .strip .figure img{aspect-ratio:3/4;object-fit:cover;}
+  @media (max-width:820px){
+    .brief-grid{grid-template-columns:1fr;}
+    .brief-grid .figure{max-width:420px;}
+    .strip{grid-template-columns:1fr;}
+    .strip .figure img{aspect-ratio:4/3;}
+  }
 
   /* caret for typewriter */
   .caret{display:inline-block;width:7px;height:11px;background:var(--moss);vertical-align:-1px;
@@ -315,7 +358,8 @@
     <a href="#experiments" data-ch="experiments">04</a>
     <a href="#transmissions" data-ch="transmissions">05</a>
     <a href="#formation" data-ch="formation">06</a>
-    <a href="#signal" data-ch="signal">07</a>
+    <a href="#offhours" data-ch="offhours">07</a>
+    <a href="#signal" data-ch="signal">08</a>
   </div>
   <div class="r-tag">field notes — 2026</div>
 </aside>
@@ -368,11 +412,19 @@
         <span class="ln"><span>Outputs that stay <span class="ital">verifiable.</span></span></span>
         <span class="ln"><span>Infrastructure that <span class="ital">degrades gracefully.</span></span></span>
       </h2>
-      <p class="lede rv d2">Six-plus years building production systems, now focused on LLM-native
-        and multi-agent applications. Deep enterprise experience across life sciences
-        (<strong>Pfizer</strong>) and financial / enterprise (<strong>PwC</strong>) — with end-to-end
-        ownership from data pipeline through agent orchestration, LLM integration, and
-        Kubernetes deployment.</p>
+      <div class="brief-grid">
+        <p class="lede rv d2">Six-plus years building production systems, now focused on LLM-native
+          and multi-agent applications. Deep enterprise experience across life sciences
+          (<strong>Pfizer</strong>) and financial / enterprise (<strong>PwC</strong>) — with end-to-end
+          ownership from data pipeline through agent orchestration, LLM integration, and
+          Kubernetes deployment.</p>
+        <figure class="figure" style="margin:0;">
+          <img src="assets/portrait.webp" alt="Shivam Sharma above the clouds in the Smoky Mountains"
+            loading="lazy" onerror="this.onerror=null;this.src='assets/portrait.jpg'">
+          <figcaption class="cap">// the engineer — above the cloud layer</figcaption>
+          <span class="veil"></span>
+        </figure>
+      </div>
     </div>
   </section>
 
@@ -534,6 +586,17 @@
     </div>
   </section>
 
+  <!-- ============ INTERSTITIAL — YOSEMITE ============ -->
+  <div class="inter" id="inter1">
+    <img src="assets/yosemite.webp" alt="Standing beside a lone pine on granite at Olmsted Point, Yosemite"
+      loading="lazy" onerror="this.onerror=null;this.src='assets/yosemite.jpg'">
+    <div class="i-scrim"></div>
+    <div class="i-inner wrap">
+      <div class="i-quote rv">“Half the job is showing up where the terrain is unmapped.”</div>
+      <div class="i-cap rv d2" data-type="// olmsted point, yosemite — field posting"></div>
+    </div>
+  </div>
+
   <!-- ============ CH 05 TRANSMISSIONS ============ -->
   <section class="ch" id="transmissions">
     <div class="wrap">
@@ -588,13 +651,47 @@
     </div>
   </section>
 
-  <!-- ============ CH 07 SIGNAL / CONTACT ============ -->
+  <!-- ============ CH 07 OFF HOURS ============ -->
+  <section class="ch" id="offhours">
+    <div class="wrap">
+      <div class="ch-label"><span class="no">ch. 07</span><span class="rule"></span><span class="txt" data-type="the off hours"></span></div>
+      <h2 class="big rv">Fog, granite, firelight — <span class="ital">recharging.</span></h2>
+      <div class="filmband rv d1" style="margin-top:36px;">
+        <video id="film" muted loop playsinline preload="none" poster="assets/film-poster.jpg"
+          data-src="assets/film.mp4"></video>
+        <span class="f-cap">field_recording_001.mp4 — light through the trees</span>
+        <span class="f-rec">rec</span>
+      </div>
+      <div class="strip">
+        <figure class="figure rv" style="margin:0;">
+          <img src="assets/tent.webp" alt="Campsite tent with sun rays through misty pines" loading="lazy"
+            onerror="this.onerror=null;this.src='assets/tent.jpg'">
+          <figcaption class="cap">// remote office</figcaption>
+          <span class="veil"></span>
+        </figure>
+        <figure class="figure rv d1" style="margin:0;">
+          <img src="assets/fire.webp" alt="Campfire at night" loading="lazy"
+            onerror="this.onerror=null;this.src='assets/fire.jpg'">
+          <figcaption class="cap">// off-grid computing</figcaption>
+          <span class="veil"></span>
+        </figure>
+        <figure class="figure rv d2" style="margin:0;">
+          <img src="assets/ducks.webp" alt="Ducklings resting by a mountain stream" loading="lazy"
+            onerror="this.onerror=null;this.src='assets/ducks.jpg'">
+          <figcaption class="cap">// field team, unsupervised</figcaption>
+          <span class="veil"></span>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CH 08 SIGNAL / CONTACT ============ -->
   <section class="ch outro" id="signal">
-    <div class="outro-img"><img src="assets/forest.webp" alt=""
-      onerror="this.onerror=null;this.src='assets/forest.jpg'"></div>
+    <div class="outro-img"><img src="assets/stars.webp" alt=""
+      onerror="this.onerror=null;this.src='assets/stars.jpg'"></div>
     <div class="outro-scrim"></div>
     <div class="wrap">
-      <div class="ch-label"><span class="no">ch. 07</span><span class="rule"></span><span class="txt" data-type="the signal"></span></div>
+      <div class="ch-label"><span class="no">ch. 08</span><span class="rule"></span><span class="txt" data-type="the signal"></span></div>
       <h2 class="big">
         <span class="ln"><span>The fog clears for teams</span></span>
         <span class="ln"><span>that <span class="ital">ship.</span> Send a signal.</span></span>
@@ -728,7 +825,34 @@
       io.unobserve(e.target);
     });
   },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
-  document.querySelectorAll('section.ch, .tele').forEach(function(s){ io.observe(s); });
+  document.querySelectorAll('section.ch, .tele, .inter').forEach(function(s){ io.observe(s); });
+
+  /* ---------- lazy film loop ---------- */
+  (function(){
+    var v=document.getElementById('film');
+    if(!v) return;
+    var vio=new IntersectionObserver(function(ents){
+      ents.forEach(function(e){
+        if(e.isIntersecting){
+          if(!v.src){ v.src=v.getAttribute('data-src'); }
+          v.play().catch(function(){});
+        } else { v.pause(); }
+      });
+    },{threshold:0.2,rootMargin:'200px 0px'});
+    vio.observe(v);
+  })();
+
+  /* ---------- interstitial parallax ---------- */
+  var interImg=document.querySelector('#inter1 img'), interBox=document.getElementById('inter1');
+  if(interImg && !reduced){
+    window.addEventListener('scroll',function(){
+      var r=interBox.getBoundingClientRect();
+      if(r.bottom>0 && r.top<window.innerHeight){
+        var p=(r.top+r.height/2-window.innerHeight/2)/window.innerHeight;
+        interImg.style.transform='translateY('+(p*-46)+'px)';
+      }
+    },{passive:true});
+  }
 
   var io2=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
