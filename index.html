@@ -223,28 +223,24 @@
   .web-ch{overflow:visible;}
   .web-bg{position:sticky;top:0;height:100vh;margin-bottom:-100vh;z-index:0;overflow:hidden;
     pointer-events:none;}
-  /* the constellation is dimmed behind the copy with a mask on the canvas
-     itself rather than a dark overlay — that way the row labels out in the
-     margins stay at full strength and legible */
+  /* only a vertical fade in CSS — the horizontal "keep clear of the copy"
+     dimming happens per-node in JS so the typed labels stay at full strength */
   .web-bg canvas{position:absolute;inset:0;
-    -webkit-mask-image:
-      linear-gradient(90deg,#000 0 17%,rgba(0,0,0,.15) 23%,rgba(0,0,0,.15) 77%,#000 83% 100%),
-      linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
-    -webkit-mask-composite:source-in;
-    mask-image:
-      linear-gradient(90deg,#000 0 17%,rgba(0,0,0,.15) 23%,rgba(0,0,0,.15) 77%,#000 83% 100%),
-      linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
-    mask-composite:intersect;}
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);}
   .web-scrim{display:none;}
   .web-fg{position:relative;z-index:2;}
 
   /* ---------- skills ---------- */
   .skill-row{display:grid;grid-template-columns:210px 1fr;gap:10px 26px;padding:17px 0;
-    border-top:1px solid var(--hair);transition:background .25s,padding-left .25s;}
+    border-top:1px solid var(--hair);transition:background .25s;}
   .skill-row:last-child{border-bottom:1px solid var(--hair);}
-  .skill-row:hover{background:rgba(12,15,13,.7);padding-left:10px;}
+  .skill-row:hover{background:rgba(12,15,13,.26);}
   .skill-k{font-family:var(--mono);font-size:11px;color:var(--moss);font-weight:600;
     letter-spacing:2px;text-transform:uppercase;padding-top:3px;min-height:16px;}
+  /* the key stays in the DOM for screen readers + search, but the swarm is what
+     you actually see — it types the key into this exact slot on the canvas */
+  body.swarm .swarm-slot{color:transparent;}
   .skill-v{font-family:var(--mono);font-size:13.5px;line-height:1.75;color:var(--fog2);}
 
   /* ---------- experience ---------- */
@@ -274,10 +270,12 @@
   .inter img{position:absolute;inset:0;width:100%;height:120%;object-fit:cover;object-position:center 46%;
     filter:saturate(1) brightness(.94);will-change:transform;}
   .inter .i-scrim{position:absolute;inset:0;
-    background:linear-gradient(180deg,var(--ink0) 0%,rgba(7,9,8,.10) 26%,rgba(7,9,8,.22) 62%,rgba(7,9,8,.96) 100%);}
+    background:linear-gradient(180deg,var(--ink0) 0%,rgba(7,9,8,.12) 24%,rgba(7,9,8,.26) 52%,
+      rgba(7,9,8,.80) 84%,var(--ink0) 100%);}
   .inter .i-inner{position:absolute;left:0;right:0;bottom:clamp(40px,9vh,90px);z-index:2;}
   .inter .i-quote{font-size:clamp(22px,3.4vw,42px);font-weight:330;font-style:italic;
-    color:var(--fog);max-width:640px;line-height:1.3;text-shadow:0 2px 30px rgba(0,0,0,.6);}
+    color:var(--fog);max-width:640px;line-height:1.3;
+    text-shadow:0 2px 22px rgba(0,0,0,.9),0 0 60px rgba(0,0,0,.7);}
   .inter .i-cap{margin-top:16px;font-family:var(--mono);font-size:9.5px;letter-spacing:2.5px;
     color:var(--fog2);text-transform:uppercase;}
 
@@ -320,28 +318,10 @@
   .edu-org{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:5px;}
   .edu-when{font-family:var(--mono);font-size:10.5px;letter-spacing:2px;color:var(--dim);}
 
-  /* ---------- off hours: single field recording + strip ---------- */
-  /* width is capped so the 1080-wide source never has to be upscaled on a
-     retina screen — that is what keeps it crisp */
-  .solofilm{margin-top:36px;display:flex;justify-content:center;}
-  .solofilm .vwrap{width:min(430px,84vw);}
-  .solofilm .vwrap video{height:auto;}
-  .vwrap{position:relative;overflow:hidden;background:transparent;}
-  .vwrap video{display:block;width:100%;height:100%;object-fit:cover;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),
-      linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);
-    -webkit-mask-composite:source-in;
-    mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),
-      linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);
-    mask-composite:intersect;}
-  .vwrap.tall{min-height:100%;}
-  .vwrap .f-cap{position:absolute;left:14px;bottom:12px;font-family:var(--mono);font-size:9px;
-    letter-spacing:2px;color:rgba(238,241,238,.75);text-transform:uppercase;z-index:2;}
-  .vwrap .f-rec{position:absolute;right:14px;top:12px;font-family:var(--mono);font-size:9px;
-    letter-spacing:2px;color:#e66;text-transform:uppercase;z-index:2;}
-  .vwrap .f-rec:before{content:"●";margin-right:6px;animation:blink 1.4s steps(1) infinite;}
-  .vwrap .f-scrub{position:absolute;right:14px;top:12px;font-family:var(--mono);font-size:9px;
-    letter-spacing:2px;color:var(--moss);text-transform:uppercase;z-index:2;}
+  /* ---------- off hours: wide plate + strip ---------- */
+  .widefig{position:relative;margin:36px 0 0;}
+  .widefig img{filter:none;transform:none;}
+  .widefig:hover img{transform:none;}
   .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
   .strip .figure img{aspect-ratio:3/4;object-fit:cover;}
 
@@ -397,7 +377,6 @@
     .job-when{padding-top:0;}
     .brief-grid{grid-template-columns:1fr;}
     .brief-grid .figure{max-width:420px;}
-    .solofilm .vwrap{width:min(360px,80vw);}
     .strip{grid-template-columns:1fr;}
     .strip .figure img{aspect-ratio:4/3;}
     #stack{height:240vh;}
@@ -409,6 +388,7 @@
     html{scroll-behavior:auto;}
     .ln>span{transform:none;}
     .rv{opacity:1;transform:none;}
+    body.swarm .swarm-slot{color:inherit;}
   }
 </style>
 </head>
@@ -536,11 +516,11 @@
       <div class="ch-label"><span class="no">ch. 02</span><span class="rule"></span><span class="txt" data-type="the instruments"></span></div>
       <h2 class="big rv">Tools carried into <span class="ital">the field.</span></h2>
       <div style="margin-top:36px;">
-        <div class="skill-row" data-web="languages"><div class="skill-k" data-typek="Languages"></div><div class="skill-v rv">Python, SQL, JavaScript, C/C++</div></div>
-        <div class="skill-row" data-web="genai / ml"><div class="skill-k" data-typek="GenAI &amp; ML"></div><div class="skill-v rv">LLM agents &amp; orchestration, multi-agent systems, RAG, prompt engineering, MCP tools, Langfuse, LangChain, SpaCy, NLTK, OpenCV, vision/multimodal models</div></div>
-        <div class="skill-row" data-web="backend"><div class="skill-k" data-typek="Backend"></div><div class="skill-v rv">FastAPI, Django, REST APIs, microservices, event-driven architecture, RabbitMQ, async processing</div></div>
-        <div class="skill-row" data-web="data"><div class="skill-k" data-typek="Data"></div><div class="skill-v rv">PostgreSQL, pgvector, MongoDB, DynamoDB, Redis, MySQL, Neo4j</div></div>
-        <div class="skill-row" data-web="cloud / devops"><div class="skill-k" data-typek="Cloud &amp; DevOps"></div><div class="skill-v rv">AWS (Lambda, Step Functions, S3, EC2, RDS, API Gateway), Azure (Entra ID, Key Vault), Kubernetes, Argo CD, Helm, Docker, GitHub Actions CI/CD, GitOps</div></div>
+        <div class="skill-row" data-web="languages"><div class="skill-k"><span class="swarm-slot">Languages</span></div><div class="skill-v rv">Python, SQL, JavaScript, C/C++</div></div>
+        <div class="skill-row" data-web="genai & ml"><div class="skill-k"><span class="swarm-slot">GenAI &amp; ML</span></div><div class="skill-v rv">LLM agents &amp; orchestration, multi-agent systems, RAG, prompt engineering, MCP tools, Langfuse, LangChain, SpaCy, NLTK, OpenCV, vision/multimodal models</div></div>
+        <div class="skill-row" data-web="backend"><div class="skill-k"><span class="swarm-slot">Backend</span></div><div class="skill-v rv">FastAPI, Django, REST APIs, microservices, event-driven architecture, RabbitMQ, async processing</div></div>
+        <div class="skill-row" data-web="data"><div class="skill-k"><span class="swarm-slot">Data</span></div><div class="skill-v rv">PostgreSQL, pgvector, MongoDB, DynamoDB, Redis, MySQL, Neo4j</div></div>
+        <div class="skill-row" data-web="cloud & devops"><div class="skill-k"><span class="swarm-slot">Cloud &amp; DevOps</span></div><div class="skill-v rv">AWS (Lambda, Step Functions, S3, EC2, RDS, API Gateway), Azure (Entra ID, Key Vault), Kubernetes, Argo CD, Helm, Docker, GitHub Actions CI/CD, GitOps</div></div>
       </div>
     </div>
   </section>
@@ -555,7 +535,7 @@
 
         <article class="job" data-web="forward_deployed_engineer">
           <div class="job-head">
-            <div class="job-title"><span class="ln"><span>Forward Deployed Engineer</span></span></div>
+            <div class="job-title"><span class="swarm-slot">Forward Deployed Engineer</span></div>
             <div class="job-when rv">Oct 2025 — Present</div>
           </div>
           <div class="job-org rv d1"><span class="org-chip">PwC</span><span>Tampa, FL · Hybrid</span></div>
@@ -572,7 +552,7 @@
 
         <article class="job" data-web="lead_backend_developer">
           <div class="job-head">
-            <div class="job-title"><span class="ln"><span>Lead Backend Developer</span></span></div>
+            <div class="job-title"><span class="swarm-slot">Lead Backend Developer</span></div>
             <div class="job-when rv">May 2024 — Oct 2025</div>
           </div>
           <div class="job-org rv d1"><span class="org-chip">Pfizer</span><span>Pleasanton, CA · Remote</span></div>
@@ -587,7 +567,7 @@
 
         <article class="job" data-web="software_engineer">
           <div class="job-head">
-            <div class="job-title"><span class="ln"><span>Software Engineer</span></span></div>
+            <div class="job-title"><span class="swarm-slot">Software Engineer</span></div>
             <div class="job-when rv">May 2023 — Mar 2024</div>
           </div>
           <div class="job-org rv d1"><span class="org-chip">Pinhous</span><span>Toronto, Canada · Remote</span></div>
@@ -601,7 +581,7 @@
 
         <article class="job" data-web="control_engineer" data-web-last="1">
           <div class="job-head">
-            <div class="job-title"><span class="ln"><span>Control Engineer</span></span></div>
+            <div class="job-title"><span class="swarm-slot">Control Engineer</span></div>
             <div class="job-when rv">May 2019 — Jul 2021</div>
           </div>
           <div class="job-org rv d1"><span class="org-chip">ActiveIQ</span><span>Bengaluru, India · On-site</span></div>
@@ -620,12 +600,12 @@
 
   <!-- ============ INTERSTITIAL — YOSEMITE ============ -->
   <div class="inter" id="inter1">
-    <img src="assets/yosemite.webp" alt="Standing beside a lone pine on granite at Olmsted Point, Yosemite"
-      loading="lazy" onerror="this.onerror=null;this.src='assets/yosemite.jpg'">
+    <img src="assets/terrain.webp" alt="Snow and scree below unnamed granite peaks in the high Sierra"
+      loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/terrain.jpg'">
     <div class="i-scrim"></div>
     <div class="i-inner wrap">
       <div class="i-quote rv">“Half the job is showing up where the terrain is unmapped.”</div>
-      <div class="i-cap rv d2" data-type="// olmsted point, yosemite — field posting"></div>
+      <div class="i-cap rv d2" data-type="// the high sierra, ca — field posting"></div>
     </div>
   </div>
 
@@ -741,15 +721,12 @@
     <div class="wrap">
       <div class="ch-label"><span class="no">ch. 07</span><span class="rule"></span><span class="txt" data-type="the off hours"></span></div>
       <h2 class="big rv">Fog, granite, firelight — <span class="ital">recharging.</span></h2>
-      <div class="solofilm rv d1">
-        <div class="vwrap">
-          <video id="scrubv" muted playsinline preload="auto" poster="assets/scrub-poster.jpg">
-            <source src="assets/scrub.mp4" type="video/mp4">
-          </video>
-          <span class="f-cap">field_recording_002</span>
-          <span class="f-scrub">◍ scrubs with your scroll</span>
-        </div>
-      </div>
+      <figure class="figure widefig rv d1">
+        <img src="assets/granite.webp" alt="Under a pine on the granite above Tenaya Canyon, Yosemite"
+          loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/granite.jpg'">
+        <figcaption class="cap">// signal lost, on purpose</figcaption>
+        <span class="veil"></span>
+      </figure>
       <div class="strip">
         <figure class="figure rv" style="margin:0;">
           <img src="assets/tent.webp" alt="Campsite tent with sun rays through misty pines" loading="lazy"
@@ -881,12 +858,10 @@
   if(reduced){ clearInterval(lt); loader.classList.add('done'); document.body.classList.add('ready');
     document.querySelectorAll('[data-type]').forEach(function(el){ typewrite(el); }); }
 
-  /* ---------- scroll: progress, day→night, stack, scrub ---------- */
+  /* ---------- scroll: progress, day→night, portrait stack ---------- */
   var prog=document.getElementById('prog');
   var hero=document.getElementById('hero'), heroNight=document.getElementById('heronight');
   var stack=document.getElementById('stack'), cards=stack?[].slice.call(stack.querySelectorAll('.card')):[];
-  var scrubV=document.getElementById('scrubv'), scrubBox=scrubV?scrubV.parentElement:null;
-  var scrubTarget=0;
   var interImg=document.querySelector('#inter1 img'), interBox=document.getElementById('inter1');
 
   function clamp(v,a,b){return v<a?a:(v>b?b:v);}
@@ -922,13 +897,6 @@
       });
     }
 
-    /* scrub video */
-    if(scrubV && scrubBox){
-      var sr=scrubBox.getBoundingClientRect();
-      var vp=clamp((window.innerHeight-sr.top)/(window.innerHeight+sr.height),0,1);
-      scrubTarget=vp;
-    }
-
     /* interstitial parallax */
     if(interImg && !reduced && interBox){
       var ir=interBox.getBoundingClientRect();
@@ -944,22 +912,6 @@
     requestAnimationFrame(function(){ onScroll(); ticking=false; });
   },{passive:true});
   onScroll();
-
-  /* smooth scrub-time follower */
-  if(scrubV && !reduced){
-    var last=-1;
-    (function scrubLoop(){
-      if(scrubV.duration){
-        var want=scrubTarget*Math.max(0.01,scrubV.duration-0.05);
-        var cur=scrubV.currentTime;
-        var next=cur+(want-cur)*0.14;
-        if(Math.abs(next-cur)>0.01 && Math.abs(next-last)>0.005){
-          try{ scrubV.currentTime=next; last=next; }catch(e){}
-        }
-      }
-      requestAnimationFrame(scrubLoop);
-    })();
-  } else if(scrubV && reduced){ scrubV.setAttribute('autoplay',''); scrubV.setAttribute('loop',''); }
 
   /* ---------- section reveals ---------- */
   var io=new IntersectionObserver(function(entries){
@@ -1014,8 +966,9 @@
     var ctx=canvas.getContext('2d');
     var holder=canvas.parentElement;
     var W=0,H=0,dpr=1,nodes=[],running=false,raf=null;
-    var bursts=[],pulses=[],lastPulse=0,mode='ambient',collapseT=0,ghost=null;
-    var N=30, LINK=170;
+    var bursts=[],pulses=[],lastPulse=0;
+    var N=30, LINK=240;                    /* N is recomputed from the canvas area */
+    var copyL=0, copyR=0;                  /* band the body copy occupies, in canvas px */
     function resize(){
       dpr=Math.min(window.devicePixelRatio||1,2);
       var r=holder.getBoundingClientRect();
@@ -1023,55 +976,109 @@
       canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
       canvas.style.width=W+'px';canvas.style.height=H+'px';
       ctx.setTransform(dpr,0,0,dpr,0,0);
-      if(!nodes.length){
-        for(var i=0;i<N;i++) nodes.push({
-          x:Math.random()*W,y:Math.random()*H,
-          vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
-          hx:0,hy:0
-        });
-      }
+      /* a denser, wider-reaching mesh — scaled to the area so it stays even */
+      N=Math.max(46,Math.min(120,Math.round(W*H/12500)));
+      LINK=Math.max(190,Math.min(300,Math.round(Math.sqrt(W*H)/4.6)));
+      var wrapEl=holder.parentElement.querySelector('.wrap');
+      if(wrapEl){
+        var wr=wrapEl.getBoundingClientRect(), cs=getComputedStyle(wrapEl);
+        copyL=wr.left+parseFloat(cs.paddingLeft||0)-r.left;
+        copyR=wr.right-parseFloat(cs.paddingRight||0)-r.left;
+      } else { copyL=W*0.2; copyR=W*0.8; }
+      while(nodes.length<N) nodes.push({
+        x:Math.random()*W,y:Math.random()*H,
+        vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
+        hx:0,hy:0
+      });
+      if(nodes.length>N) nodes.length=N;
+    }
+    /* keep the mesh quiet where the words are, bright out in the margins */
+    function dimAt(x){
+      var e=90;
+      if(x<copyL-e || x>copyR+e) return 1;
+      if(x>copyL && x<copyR) return 0.2;
+      var d=x<copyL ? (copyL-x)/e : (x-copyR)/e;
+      return 0.2+0.8*d;
     }
     function fog(a){return 'rgba(238,241,238,'+Math.max(0,a)+')';}
     function moss(a){return 'rgba(157,185,143,'+Math.max(0,a)+')';}
+
+    /* ---- read a label's font, colour and line boxes straight off the DOM ----
+       The real text is still in the markup (transparent), so the swarm can type
+       it back in the exact typeface, size and position the browser laid out. */
+    function splitLines(slot,rects){
+      var node=slot.firstChild;
+      var up=getComputedStyle(slot).textTransform==='uppercase';
+      var txt=(node&&node.nodeType===3)?node.nodeValue:slot.textContent;
+      function cook(s){ s=s.trim(); return up?s.toUpperCase():s; }
+      if(!node||node.nodeType!==3||rects.length<=1) return [cook(txt)];
+      var r=document.createRange(), out=[], cur='', idx=0;
+      for(var i=0;i<txt.length;i++){
+        r.setStart(node,i); r.setEnd(node,i+1);
+        var cr=r.getBoundingClientRect();
+        if(cr.width||cr.height){
+          while(idx<rects.length-1 && cr.top>=rects[idx+1].top-1){ out.push(cook(cur)); cur=''; idx++; }
+        }
+        cur+=txt[i];
+      }
+      out.push(cook(cur));
+      return out;
+    }
+    function slotGeom(bu){
+      var slot=bu.slot; if(!slot) return null;
+      var rects=slot.getClientRects(); if(!rects.length) return null;
+      var cs=getComputedStyle(slot);
+      var fs=parseFloat(cs.fontSize)||14;
+      var lh=parseFloat(cs.lineHeight)||fs*1.3;
+      var ls=parseFloat(cs.letterSpacing)||0;
+      var font=(cs.fontStyle==='italic'?'italic ':'')+(cs.fontWeight||400)+' '+fs+'px '+cs.fontFamily;
+      var ink=getComputedStyle(slot.parentNode).color||'rgb(238,241,238)';
+      var key=rects.length+'|'+Math.round(rects[0].width)+'|'+Math.round(fs);
+      if(bu.splitKey!==key){ bu.split=splitLines(slot,rects); bu.splitKey=key; }
+      ctx.font=font;
+      var m=ctx.measureText('Hxg');
+      var asc=m.fontBoundingBoxAscent||fs*0.76, desc=m.fontBoundingBoxDescent||fs*0.24;
+      var lines=[],i;
+      for(i=0;i<bu.split.length;i++){
+        var r=rects[Math.min(i,rects.length-1)];
+        lines.push({t:bu.split[i],x:r.left,base:r.top+(r.height-(asc+desc))/2+asc});
+      }
+      var f=rects[0], l=rects[rects.length-1];
+      return {lines:lines,font:font,ls:ls,ink:ink,lh:lh,
+              ax:(f.left+l.right)/2, ay:(f.top+l.bottom)/2};
+    }
     function frame(now){
       if(!running) return;
       ctx.clearRect(0,0,W,H);
       var t=now/1000;
-      /* move — keep the collapse centred in the VISIBLE band of the pinned canvas */
-      var cx=W/2, cy=H/2;
-      if(mode==='collapse'){
-        var hr=holder.getBoundingClientRect();
-        if(hr.top<0) cy=Math.max(140,(H+hr.top)/2 - hr.top);
-      }
       nodes.forEach(function(n){
-        if(mode==='collapse'){
-          var k=Math.min(1,(t-collapseT)/1.4);
-          var ang=Math.atan2(n.y-cy,n.x-cx)+0.004+(k*0.01);
-          var targR=64+18*Math.sin(t*0.8+n.x);
-          var tx=cx+Math.cos(ang)*targR, ty=cy+Math.sin(ang)*targR;
-          n.x+= (tx-n.x)*0.045; n.y+=(ty-n.y)*0.045;
-        } else {
-          n.x+=n.vx+n.hx; n.y+=n.vy+n.hy;
-          n.hx*=0.92; n.hy*=0.92;
-          if(n.x<0||n.x>W)n.vx*=-1; if(n.y<0||n.y>H)n.vy*=-1;
-          n.x=clamp(n.x,0,W); n.y=clamp(n.y,0,H);
-        }
+        n.x+=n.vx+n.hx; n.y+=n.vy+n.hy;
+        n.hx*=0.92; n.hy*=0.92;
+        if(n.x<0||n.x>W)n.vx*=-1; if(n.y<0||n.y>H)n.vy*=-1;
+        n.x=clamp(n.x,0,W); n.y=clamp(n.y,0,H);
       });
       /* edges */
+      ctx.lineWidth=1;
       for(var i=0;i<nodes.length;i++){
         for(var j=i+1;j<nodes.length;j++){
           var a=nodes[i],b=nodes[j];
           var dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
-          var lim=mode==='collapse'?120:LINK;
+          var lim=LINK;
+          /* gentle separation so the mesh never knots up where labels pull it */
+          if(d<46 && d>0.01){
+            var sp=(46-d)/46*0.06;
+            a.hx+=dx/d*sp; a.hy+=dy/d*sp; b.hx-=dx/d*sp; b.hy-=dy/d*sp;
+          }
           if(d<lim){
-            ctx.lineWidth=1;
-            ctx.strokeStyle=fog((1-d/lim)*(mode==='collapse'?0.3:0.16));
+            var ea=(1-d/lim)*0.15*dimAt((a.x+b.x)*0.5);
+            if(ea<0.006) continue;
+            ctx.strokeStyle=fog(ea);
             ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
           }
         }
       }
       /* ambient pulses */
-      if(mode!=='collapse' && t-lastPulse>1.15){
+      if(t-lastPulse>1.15){
         var e1=nodes[Math.floor(Math.random()*nodes.length)];
         var near=null,bd=1e9;
         nodes.forEach(function(m){ if(m===e1)return;
@@ -1083,13 +1090,13 @@
       pulses=pulses.filter(function(pl){
         var pp=(t-pl.s)/0.85; if(pp>1) return false;
         var px=pl.a.x+(pl.b.x-pl.a.x)*pp, py=pl.a.y+(pl.b.y-pl.a.y)*pp;
-        ctx.fillStyle=moss(0.75*(1-pp*0.4));
+        ctx.fillStyle=moss(0.75*(1-pp*0.4)*dimAt(px));
         ctx.beginPath();ctx.arc(px,py,2.4,0,6.2832);ctx.fill();
         return true;
       });
       /* nodes */
       nodes.forEach(function(n){
-        ctx.fillStyle=fog(mode==='collapse'?0.5:0.32);
+        ctx.fillStyle=fog(0.34*dimAt(n.x));
         ctx.fillRect(n.x-1.8,n.y-1.8,3.6,3.6);
       });
       /* ---- labels: pinned to the row / job they belong to ----
@@ -1100,97 +1107,92 @@
          is actually readable. */
       var hostRect=holder.getBoundingClientRect();
       var vh=window.innerHeight||H;
+
+      /* text with explicit letter-spacing, drawn left- or right-aligned */
+      function trackWidth(str,font,ls){
+        ctx.font=font;
+        return ctx.measureText(str).width + ls*Math.max(0,str.length-1);
+      }
+      function trackText(str,x,y,font,ls,align){
+        ctx.font=font;
+        ctx.textAlign='left';ctx.textBaseline='alphabetic';
+        var cx = align==='right' ? x-trackWidth(str,font,ls) : x;
+        for(var c=0;c<str.length;c++){
+          ctx.fillText(str[c],cx,y);
+          cx += ctx.measureText(str[c]).width + ls;
+        }
+        return cx;
+      }
+      /* greedily wrap a label into lines that fit, breaking on _ / and space */
+      function wrapLabel(str,font,ls,room){
+        var parts=str.split(/(?<=[_\/ ])/), lines=[], cur='';
+        for(var i=0;i<parts.length;i++){
+          var next=cur+parts[i];
+          if(cur && trackWidth(next.trim(),font,ls)>room){ lines.push(cur.trim()); cur=parts[i]; }
+          else cur=next;
+        }
+        if(cur.trim()) lines.push(cur.trim());
+        return lines;
+      }
+
       bursts=bursts.filter(function(bu){
         var live=bu.el.getBoundingClientRect();
-        var visible = mode!=='collapse' && live.bottom>10 && live.top<vh-10;
+        var visible = live.bottom>10 && live.top<vh-10;
         if(visible && !bu.wasVisible){ bu.enterT=t; }      /* replay on re-entry */
         bu.wasVisible=visible;
         bu.a += ((visible?1:0)-bu.a)*0.07;
-        if(!visible && bu.a<0.015){ if(mode==='collapse') return false; return true; }
+        if(!visible && bu.a<0.015) return true;
 
-        var anc=bu.anchor.getBoundingClientRect();
-        var y=clamp(anc.top+anc.height/2-hostRect.top, 40, H-40);
-        var bt=t-bu.enterT;
-        var a=bu.a;
+        var bt=Math.max(0,t-bu.enterT), a=bu.a;
+        var g=slotGeom(bu);                       /* font, colour and line boxes, from the DOM */
+        if(!g) return true;
 
-        /* pick the margin beside the text column; never paint over the copy */
-        var gapR=hostRect.right-live.right, gapL=live.left-hostRect.left;
-        var pad=28, base=W<1180?13:15, side=bu.side, align, x, room;
-        if(side==='r' && gapR-pad>44){ align='left';  x=live.right-hostRect.left+pad; room=gapR-pad-10; }
-        else if(gapL-pad>44){        align='right'; x=live.left -hostRect.left-pad; room=gapL-pad-10; }
-        else if(gapR-pad>44){        align='left';  x=live.right-hostRect.left+pad; room=gapR-pad-10; }
-        else { room=0; }
+        var lines=g.lines, font=g.font, ls=g.ls, ink=g.ink, lh=g.lh;
+        var ax=g.ax-hostRect.left, ay=g.ay-hostRect.top;
 
-        var txt=bu.label.toUpperCase(), fs=base, tw=0;
-        if(room>0){
-          ctx.font='500 '+fs+'px "IBM Plex Mono", monospace';
-          tw=ctx.measureText(txt).width;
-          if(tw>room){ fs=Math.max(9,Math.floor(fs*room/tw)); ctx.font='500 '+fs+'px "IBM Plex Mono", monospace';
-                       tw=ctx.measureText(txt).width; }
-          if(tw>room) room=0;                       /* still won't fit — drop the text */
-        }
-
-        /* anchor point the swarm reacts to: the margin slot, or the row edge */
-        var ax = room>0 ? (align==='left'? x+tw*0.5 : x-tw*0.5)
-                        : (side==='r'? Math.min(W-24, live.right-hostRect.left) : Math.max(24, live.left-hostRect.left));
-        var ay = y-4;
-
-        if(bt<0.6){
+        if(bt<0.5){
           nodes.slice(bu.k,bu.k+9).forEach(function(n){
-            n.hx+=(ax-n.x)*0.012; n.hy+=(ay-n.y)*0.012;
+            n.hx+=(ax-n.x)*0.007; n.hy+=(ay-n.y)*0.007;
           });
         }
         /* one expanding ring on entry */
         if(bt<1.7){
           ctx.lineWidth=1;ctx.strokeStyle=moss(Math.max(0,0.30-bt*0.18)*a);
-          ctx.beginPath();ctx.arc(ax,ay,bt*140,0,6.2832);ctx.stroke();
+          ctx.beginPath();ctx.arc(ax,ay,Math.max(0,bt*160),0,6.2832);ctx.stroke();
         }
-        if(room>0){
-          var chars=Math.min(txt.length,Math.floor(Math.max(0,bt)/0.042));
-          /* leader tick from the copy edge out to the label */
-          var e0=align==='left'? live.right-hostRect.left+5 : live.left-hostRect.left-5;
-          var e1=align==='left'? x-6 : x+6;
-          ctx.lineWidth=1;ctx.strokeStyle=moss(0.30*a);
-          ctx.beginPath();ctx.moveTo(e0,y);ctx.lineTo(e1,y);ctx.stroke();
-          ctx.fillStyle=moss(0.5*a);ctx.fillRect(e0-1.5,y-1.5,3,3);
-          ctx.textAlign=align;ctx.textBaseline='middle';
-          ctx.font='500 '+fs+'px "IBM Plex Mono", monospace';
-          ctx.fillStyle=moss(0.82*a);
-          ctx.fillText(txt.slice(0,chars),x,y);
-          ctx.textAlign='left';ctx.textBaseline='alphabetic';
+
+        var total=0,L;
+        for(L=0;L<lines.length;L++) total+=lines[L].t.length;
+        var typed=Math.min(total,Math.floor(bt/0.038));
+        var used=0,endX=0,endY=0,drewAny=false;
+        ctx.fillStyle=ink.replace(/rgba?\(([^)]+)\)/,function(m,inner){
+          var p=inner.split(',').map(function(v){return v.trim();});
+          return 'rgba('+p[0]+','+p[1]+','+p[2]+','+(0.94*a)+')';
+        });
+        for(L=0;L<lines.length;L++){
+          if(used>=typed) break;
+          var take=Math.min(lines[L].t.length,typed-used);
+          var seg=lines[L].t.slice(0,take);
+          var lx=lines[L].x-hostRect.left, ly=lines[L].base-hostRect.top;
+          trackText(seg,lx,ly,font,ls,'left');
+          endX=lx+trackWidth(seg,font,ls); endY=ly; drewAny=true;
+          used+=lines[L].t.length;
         }
+        /* the caret the swarm types behind */
+        if(drewAny && typed<total && a>0.55 && Math.floor(t*2)%2===0){
+          ctx.fillRect(endX+2,endY-lh*0.62,Math.max(5,lh*0.34),lh*0.72);
+        }
+        ctx.textAlign='left';ctx.textBaseline='alphabetic';
         return true;
       });
-      /* collapse ghost text */
-      if(mode==='collapse' && ghost){
-        var gt=t-collapseT;
-        if(gt>0.9){
-          var gc=Math.min(ghost.length,Math.floor((gt-0.9)/0.05));
-          ctx.font=(W<700?12:14)+'px "IBM Plex Mono", monospace';
-          ctx.textAlign='center';
-          ctx.fillStyle=fog(0.55);
-          ctx.fillText(ghost.slice(0,gc),cx,cy+110);
-          ctx.textAlign='left';
-        }
-        if(gt<1.2){
-          var cr=gt*220, ca=Math.max(0,0.3-gt*0.22);
-          ctx.lineWidth=1.5;ctx.strokeStyle=moss(ca);
-          ctx.beginPath();ctx.arc(cx,cy,cr,0,6.2832);ctx.stroke();
-        }
-      }
       raf=requestAnimationFrame(frame);
     }
-    this.burst=function(label,el,anchor,side){
+    this.burst=function(el,slot){
       if(!W) resize();
       var now=performance.now()/1000;
-      bursts.push({label:label,el:el,anchor:anchor||el,side:side,
-        s:now,enterT:now,a:0,wasVisible:false,
-        k:Math.floor(Math.random()*(N-9))});
-    };
-    this.collapse=function(){
-      if(mode==='collapse') return;
-      mode='collapse'; collapseT=performance.now()/1000;
-      ghost='swarm.idle() — all deployments complete ✓';
+      bursts.push({el:el,slot:slot,s:now,enterT:now,a:0,wasVisible:false,
+        splitKey:null,split:null,
+        k:Math.floor(Math.random()*Math.max(1,N-9))});
     };
     this.start=function(){ if(running)return; running=true; resize(); raf=requestAnimationFrame(frame); };
     this.stop=function(){ running=false; if(raf)cancelAnimationFrame(raf); };
@@ -1209,43 +1211,27 @@
         ents.forEach(function(e){ e.isIntersecting?w.start():w.stop(); });
       },{threshold:0.02}).observe(sec);
     });
+    /* only hand the skill keys over to the canvas once the swarm really exists */
+    if(webs.instruments) document.body.classList.add('swarm');
   }
 
-  /* skill rows + jobs: register a label that stays pinned to its own row */
-  var sideFlip=false;
+  /* skill rows + jobs: register a label that stays pinned to its own row.
+     Skill rows hand over their key slot so the swarm types the label straight
+     into it; jobs keep their serif headline and get a label in the left margin. */
   var ioW=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(!e.isIntersecting) return;
       var el=e.target;
       ioW.unobserve(el);
-      var label=el.getAttribute('data-web')||'';
       var host=el.closest('.web-ch');
       var w=host?webs[host.id]:null;
-      sideFlip=!sideFlip;
-      /* a job is tall — track its heading so the label sits next to the title */
-      var anchor=el.querySelector('.job-head')||el;
-      if(w) w.burst(label, el, anchor, sideFlip?'r':'l');
-      var k=el.querySelector('[data-typek]');
-      if(k && !k.dataset.typed){
-        k.dataset.typed='1';
-        setTimeout(function(){ typewrite(k,'data-typek'); }, 260);
-      }
+      var slot=el.querySelector('.swarm-slot');
+      if(w && slot) w.burst(el, slot);
       el.classList.add('in');
       el.querySelectorAll('.rv,.ln').forEach(function(r){ r.classList.add('in'); });
     });
   },{threshold:0.2,rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.skill-row[data-web], .job[data-web]').forEach(function(el){ ioW.observe(el); });
-
-  /* the swarm only stands down once the last deployment is actually read */
-  (function(){
-    var end=document.getElementById('webend');
-    if(!end || !webs.fieldwork) return;
-    new IntersectionObserver(function(ents,obs){
-      ents.forEach(function(e){
-        if(e.isIntersecting){ webs.fieldwork.collapse(); obs.disconnect(); }
-      });
-    },{threshold:0,rootMargin:'0px 0px -52% 0px'}).observe(end);
-  })();
 
   /* ---------- smooth anchors ---------- */
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
