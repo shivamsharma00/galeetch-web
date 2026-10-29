@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raunchy — a raccoon who lives on your Mac</title>
+<meta name="description" content="Raunchy is a 3D raccoon who lives on your Mac screen: he climbs your windows, naps on ledges, steals your buttons and gives them back when you catch him. Free for macOS.">
+<meta name="author" content="Shivam Sharma">
+<meta property="og:title" content="Raunchy — a raccoon who lives on your Mac">
+<meta property="og:description" content="He climbs your windows, naps on ledges and steals your buttons. Free for macOS.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://galeetch.com/raunchy/">
+<meta property="og:image" content="https://raw.githubusercontent.com/shivamsharma00/raunchy/main/assets/raunchy-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@galeetch">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/shivamsharma00/raunchy/main/assets/raunchy-card.png">
+<meta name="theme-color" content="#070908">
+<link rel="icon" href="https://raw.githubusercontent.com/shivamsharma00/raunchy/main/assets/icon-256.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink0:#070908; --ink1:#0c0f0d; --ink2:#121613;
+    --fog:#eef1ee; --fog2:#cfd6d0; --dim:#9aa59d; --dim2:#6d786f;
+    --moss:#9db98f; --amber:#f2b45c;
+    --hair:rgba(238,241,238,0.10);
+    --serif:'Fraunces',Georgia,serif;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:var(--ink0);}
+  body{font-family:var(--serif);color:var(--fog2);-webkit-font-smoothing:antialiased;line-height:1.55;}
+  a{color:inherit;}
+  ::selection{background:var(--amber);color:var(--ink0);}
+  .wrap{max-width:980px;margin:0 auto;padding:0 clamp(16px,5vw,48px);}
+
+  nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;
+    font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);}
+  nav a{text-decoration:none;}
+  nav a:hover{color:var(--fog);}
+
+  .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding:56px 0 64px;}
+  .kicker{font-family:var(--mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin:0 0 18px;}
+  h1{font-weight:400;font-size:clamp(46px,8vw,86px);line-height:.98;margin:0 0 22px;color:var(--fog);letter-spacing:-1.5px;}
+  h1 em{font-style:italic;color:var(--amber);}
+  .lede{font-size:clamp(18px,2.2vw,21px);font-weight:300;max-width:30em;margin:0 0 32px;}
+  .cta{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 24px;border-radius:999px;text-decoration:none;
+    font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.5px;transition:transform .15s ease, background .15s ease;}
+  .btn.primary{background:var(--amber);color:var(--ink0);}
+  .btn.primary:hover{transform:translateY(-1px);background:#ffc778;}
+  .btn.ghost{border:1px solid var(--hair);color:var(--fog2);}
+  .btn.ghost:hover{border-color:var(--dim2);color:var(--fog);}
+  .req{font-family:var(--mono);font-size:11.5px;color:var(--dim2);margin-top:16px;}
+
+  .stage{position:relative;aspect-ratio:1/1;border-radius:28px;
+    background:radial-gradient(120% 90% at 50% 100%, #2a2116 0%, var(--ink1) 60%);border:1px solid var(--hair);
+    display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
+  .stage::after{content:"";position:absolute;left:12%;right:12%;bottom:17%;height:2px;background:var(--hair);}
+  .stage img{height:68%;width:auto;max-width:80%;object-fit:contain;margin-bottom:17%;position:relative;z-index:1;filter:drop-shadow(0 18px 18px rgba(0,0,0,.45));}
+  .stage .fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:120px;}
+
+  section{padding:56px 0;border-top:1px solid var(--hair);}
+  h2{font-weight:400;font-size:clamp(28px,4vw,38px);color:var(--fog);margin:0 0 28px;letter-spacing:-.5px;}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:18px;overflow:hidden;}
+  .card{background:var(--ink0);padding:24px 22px;}
+  .card h3{font-weight:500;font-size:18px;color:var(--fog);margin:0 0 8px;}
+  .card p{margin:0;font-size:15.5px;color:var(--dim);}
+
+  ol.steps{list-style:none;counter-reset:s;padding:0;margin:0;display:grid;gap:18px;max-width:640px;}
+  ol.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:6px;align-items:baseline;font-size:17px;}
+  ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:12px;color:var(--amber);}
+  code,kbd{font-family:var(--mono);font-size:.86em;background:var(--ink2);border:1px solid var(--hair);border-radius:6px;padding:1px 6px;color:var(--fog);}
+
+  .fine{font-size:15.5px;color:var(--dim);max-width:44em;}
+  .fine p{margin:0 0 14px;}
+  footer{padding:40px 0 60px;border-top:1px solid var(--hair);font-family:var(--mono);font-size:11px;letter-spacing:1.5px;
+    color:var(--dim2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;text-transform:uppercase;}
+  footer a{text-decoration:none;} footer a:hover{color:var(--fog);}
+
+  @media (max-width:760px){
+    .hero{grid-template-columns:1fr;padding-top:24px;gap:32px;}
+    .stage{max-width:420px;width:100%;margin:0 auto;order:-1;}
+    .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a href="/">← galeetch</a>
+    <a href="https://x.com/galeetch">@galeetch</a>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <p class="kicker">Free · macOS</p>
+      <h1>Raunchy lives on your <em>Mac</em>.</h1>
+      <p class="lede">A 3D raccoon who climbs your windows, naps draped over their edges, and steals your buttons. Catch him and he gives them back. Mostly.</p>
+      <div class="cta">
+        <a class="btn primary" id="dl" href="https://github.com/shivamsharma00/raunchy/releases/latest/download/Raunchy.dmg">Download for Mac</a>
+        <a class="btn ghost" href="https://github.com/shivamsharma00/raunchy/releases">All releases</a>
+      </div>
+      <p class="req">macOS 13 Ventura or later · Apple silicon · signed &amp; notarized by Apple</p>
+    </div>
+    <div class="stage">
+      <img src="https://raw.githubusercontent.com/shivamsharma00/raunchy/main/assets/raunchy.webp" alt="Raunchy the raccoon, standing"
+           onerror="this.remove();this.parentNode.insertAdjacentHTML('beforeend','<span class=fallback>🦝</span>')">
+    </div>
+  </header>
+
+  <section>
+    <h2>What he gets up to</h2>
+    <div class="grid">
+      <div class="card"><h3>Climbs everything</h3><p>Hops up, hooks a hand over a line of text or a toolbar, hangs, and hauls himself over the top.</p></div>
+      <div class="card"><h3>Steals your buttons</h3><p>Grabs a button or a word, leaves a bite hole and tows it off. Click him to get it back. The real button is never touched.</p></div>
+      <div class="card"><h3>Naps on ledges</h3><p>Lies down on a window top and lets his legs slide off one by one, like a raccoon on a branch. Dreams, kicks, sighs.</p></div>
+      <div class="card"><h3>Likes being petted</h3><p>Move the cursor over him and he leans in, eyes shut, chittering. Ignore him for a day and he sulks.</p></div>
+      <div class="card"><h3>Water fight</h3><p>Shake the mouse and the cursor becomes a water pistol. He runs, dives behind windows, digs into a ledge, and learns your tricks.</p></div>
+      <div class="card"><h3>Has manners</h3><p>Steps away when you share your screen or go full-screen, sits quietly on calls. <kbd>⌃⌥⌘P</kbd> sends him away and back.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Install</h2>
+    <ol class="steps">
+      <li><span>Download <code>Raunchy.dmg</code> and open it.</span></li>
+      <li><span>Drag <b>Raunchy</b> into <b>Applications</b>, then open him from there.</span></li>
+      <li><span>He shows up on your screen and lives in the menu bar as 🦝. Settings, size, sound and “Open at login” are all in that menu.</span></li>
+      <li><span>Optional: switch on mischief in Settings to let him walk on toolbars and steal buttons. macOS will ask for Accessibility access then, not before.</span></li>
+    </ol>
+  </section>
+
+  <section class="fine">
+    <h2>Privacy</h2>
+    <p>Raunchy runs entirely on your Mac. Nothing is sent anywhere, there are no accounts and no analytics.</p>
+    <p>Accessibility (optional) lets him see where buttons, toolbars and text are in the front window so he can climb and steal them. He never changes anything in other apps, and he stops looking whenever a password field is focused.</p>
+    <p>To remove him, quit from the 🦝 menu and drag Raunchy from Applications to the Trash.</p>
+  </section>
+
+  <footer>
+    <span>Made by <a href="/">Shivam Sharma</a></span>
+    <a href="https://x.com/galeetch">Follow along on X</a>
+  </footer>
+</div>
+</body>
+</html>
